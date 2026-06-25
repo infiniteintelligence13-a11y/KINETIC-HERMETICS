@@ -1,5 +1,15 @@
 # Kinetic Hermetics - Herbal Medicine & Hermetic Sciences Platform
 
+## 🌐 Live Site
+
+| | URL |
+|---|---|
+| **Frontend** | https://infiniteintelligence13-a11y.github.io/KINETIC-HERMETICS/ |
+| **Backend API** | https://kinetic-hermetics-api.onrender.com |
+| **API Health** | https://kinetic-hermetics-api.onrender.com/api/health |
+
+---
+
 ## 🌿 Transform Your Health, Spirit, and Soul Through Ancient Wisdom & Nature's Pharmacy
 
 Welcome to **Kinetic Hermetics**, a comprehensive platform dedicated to herbal medicine, hermetic sciences, spiritual awakening, and holistic wellness. We blend ancient wisdom with modern science to offer transformational education, high-quality herbal products, and a community of conscious seekers.
