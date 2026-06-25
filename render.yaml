@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: kinetic-hermetics-api
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: node backend/server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: EMAIL_HOST
+        value: smtp.sendgrid.net
+      - key: EMAIL_PORT
+        value: 587
+      - key: EMAIL_USER
+        value: apikey
+      - key: EMAIL_PASS
+        sync: false
+      - key: EMAIL_FROM
+        value: hello@kinetichemetics.com
+      - key: EMAIL_FROM_NAME
+        value: Kinetic Hermetics
+      - key: FRONTEND_URL
+        value: https://infiniteintelligence13-a11y.github.io

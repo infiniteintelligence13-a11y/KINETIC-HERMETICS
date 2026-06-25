@@ -124,7 +124,7 @@ document.getElementById('lead-form').addEventListener('submit', async function(e
   const name = document.getElementById('lm-name').value;
   const email = document.getElementById('lm-email').value;
   try {
-    await fetch('/api/email/subscribe', {
+    await apiFetch('/api/email/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, firstName: name, source: 'lead-magnet' })
@@ -134,5 +134,6 @@ document.getElementById('lead-form').addEventListener('submit', async function(e
   document.getElementById('lead-success').style.display = 'block';
 });
 </script>
+<script src="../js/config.js"></script>
 </body>
 </html>

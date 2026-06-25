@@ -257,7 +257,7 @@ document.getElementById('webinar-form').addEventListener('submit', async functio
     interest:  document.getElementById('wf-interest').value
   };
   try {
-    await fetch('/api/email/subscribe', {
+    await apiFetch('/api/email/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...data, source: 'webinar-registration' })
@@ -269,5 +269,6 @@ document.getElementById('webinar-form').addEventListener('submit', async functio
   setTimeout(() => { window.location.href = 'webinar-thankyou.html'; }, 3000);
 });
 </script>
+<script src="../js/config.js"></script>
 </body>
 </html>

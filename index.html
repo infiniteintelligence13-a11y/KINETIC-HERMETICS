@@ -496,7 +496,7 @@
   function subscribeNewsletter(e) {
     e.preventDefault();
     const email = e.target.querySelector('input').value;
-    fetch('/api/email/subscribe', {
+    apiFetch('/api/email/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, source: 'homepage-newsletter' })
@@ -504,5 +504,6 @@
     e.target.innerHTML = '<p style="color:var(--gold-light);font-size:1rem;font-weight:bold;">✓ Check your inbox for your free guide!</p>';
   }
 </script>
+<script src="js/config.js"></script>
 </body>
 </html>

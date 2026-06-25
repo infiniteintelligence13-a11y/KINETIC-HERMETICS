@@ -87,7 +87,7 @@ async function handleCheckout(e) {
     const formData = getFormData();
     
     try {
-        const response = await fetch('/api/create-payment-intent', {
+        const response = await apiFetch('/api/create-payment-intent', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -200,7 +200,7 @@ function saveOrder(orderId, formData, paymentIntentId) {
 function sendOrderConfirmation(order) {
     // This would be a backend API call
     console.log('Sending order confirmation to:', order.customer.email);
-    // fetch('/api/send-order-confirmation', {
+    // apiFetch('/api/send-order-confirmation', {
     //     method: 'POST',
     //     headers: { 'Content-Type': 'application/json' },
     //     body: JSON.stringify(order)

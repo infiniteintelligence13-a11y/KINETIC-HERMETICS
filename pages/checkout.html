@@ -293,7 +293,7 @@ async function submitPayment() {
     const total = getCartTotal() + bump;
 
     // Create payment intent
-    const res = await fetch('/api/payments/create-intent', {
+    const res = await apiFetch('/api/payments/create-intent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -336,5 +336,6 @@ function updateShippingVisibility() {
 }
 updateShippingVisibility();
 </script>
+<script src="../js/config.js"></script>
 </body>
 </html>

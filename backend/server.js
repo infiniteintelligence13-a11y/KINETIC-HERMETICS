@@ -166,6 +166,9 @@ const verifyToken = (req, res, next) => {
     }
 };
 
+// Health check (used by Render)
+app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));
+
 // ==================== PRODUCT & EMAIL ROUTES ====================
 const { router: productsRouter } = require('./routes/products');
 const { router: emailRouter }    = require('./routes/email');

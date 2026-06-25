@@ -358,7 +358,7 @@ document.getElementById('retreat-form').addEventListener('submit', async functio
     prior:     document.getElementById('rf-prior').value
   };
   try {
-    await fetch('/api/email/subscribe', {
+    await apiFetch('/api/email/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: data.email, firstName: data.firstName, lastName: data.lastName, source: 'retreat-application', tags: ['retreat-applicant'] })
@@ -368,5 +368,6 @@ document.getElementById('retreat-form').addEventListener('submit', async functio
   document.getElementById('retreat-success').style.display = 'block';
 });
 </script>
+<script src="../js/config.js"></script>
 </body>
 </html>
