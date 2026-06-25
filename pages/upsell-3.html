@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Offer — Puerto Rico Retreat Deposit | Kinetic Hermetics</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body { background: linear-gradient(160deg, #041a0a 0%, #0a2a14 100%); min-height: 100vh; }
+
+    .progress-bar { background: rgba(0,0,0,0.4); padding: 14px 0; text-align: center; }
+    .progress-steps { display: flex; justify-content: center; gap: 0; max-width: 440px; margin: 0 auto; }
+    .ps { flex: 1; text-align: center; position: relative; }
+    .ps::after { content: '▶'; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.3); font-size: 0.7rem; }
+    .ps:last-child::after { display: none; }
+    .ps-dot { width: 28px; height: 28px; border-radius: 50%; margin: 0 auto 4px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; }
+    .ps.done .ps-dot { background: var(--gold); color: var(--green-dark); }
+    .ps.active .ps-dot { background: var(--white); color: var(--green-dark); }
+    .ps.pending .ps-dot { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.4); }
+    .ps-label { font-size: 0.65rem; color: rgba(255,255,255,0.5); display: block; }
+    .ps.done .ps-label { color: var(--gold); }
+    .ps.active .ps-label { color: var(--white); }
+
+    .retreat-oto-hero { padding: 64px 0 48px; text-align: center; }
+    .retreat-oto-hero .badge { background: rgba(201,168,76,0.15); border: 1px solid var(--gold); color: var(--gold); display: inline-block; padding: 6px 20px; border-radius: 100px; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 20px; }
+    .retreat-oto-hero h1 { color: var(--white); font-size: 2.4rem; max-width: 780px; margin: 0 auto 16px; line-height: 1.25; }
+    .retreat-oto-hero h1 em { color: var(--gold); font-style: normal; }
+    .retreat-oto-hero p  { color: rgba(255,255,255,0.75); max-width: 600px; margin: 0 auto; font-size: 1.05rem; }
+
+    .retreat-body { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .spots-bar { background: rgba(0,0,0,0.3); border: 1px solid rgba(201,168,76,0.3); border-radius: var(--radius-sm); padding: 16px 24px; text-align: center; margin-bottom: 28px; }
+    .spots-bar p { color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 10px; }
+    .progress-track { background: rgba(255,255,255,0.1); border-radius: 100px; height: 10px; overflow: hidden; }
+    .progress-fill  { background: linear-gradient(90deg, var(--gold), var(--gold-light)); height: 100%; border-radius: 100px; width: 75%; }
+    .spots-count { display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+    .spots-count .claimed { color: var(--gold); font-weight: bold; }
+
+    .retreat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .retreat-card-header { background: linear-gradient(135deg, rgba(10,30,16,0.9), rgba(20,60,30,0.9)); padding: 28px 36px; border-bottom: 1px solid rgba(201,168,76,0.15); }
+    .retreat-card-header h2 { color: var(--gold); font-size: 1.7rem; margin-bottom: 8px; }
+    .retreat-card-header p  { color: rgba(255,255,255,0.75); font-size: 0.95rem; }
+    .retreat-card-body { padding: 32px 36px; }
+
+    .retreat-highlights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
+    .rh-item { text-align: center; padding: 20px 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); }
+    .rh-item .icon  { font-size: 2rem; margin-bottom: 8px; }
+    .rh-item .title { color: var(--gold); font-size: 0.85rem; font-weight: bold; display: block; margin-bottom: 4px; }
+    .rh-item .desc  { color: rgba(255,255,255,0.55); font-size: 0.75rem; }
+
+    .deposit-box { background: rgba(201,168,76,0.08); border: 2px solid rgba(201,168,76,0.4); border-radius: var(--radius-sm); padding: 24px; margin: 24px 0; text-align: center; }
+    .deposit-box h3 { color: var(--gold); font-size: 1.3rem; margin-bottom: 8px; }
+    .deposit-box p  { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 0; }
+    .deposit-amount { font-size: 3rem; font-weight: bold; color: var(--gold); line-height: 1; margin: 12px 0 4px; }
+    .deposit-note   { font-size: 0.8rem; color: rgba(255,255,255,0.45); }
+
+    .guarantee-note { display: flex; gap: 14px; align-items: flex-start; background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); padding: 16px; margin: 20px 0; }
+    .guarantee-note .icon { font-size: 1.8rem; flex-shrink: 0; }
+    .guarantee-note p { color: rgba(255,255,255,0.7); font-size: 0.85rem; line-height: 1.6; }
+
+    .btn-deposit { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--green-dark); display: block; text-align: center; padding: 22px 36px; border-radius: var(--radius-sm); font-size: 1.15rem; font-weight: bold; cursor: pointer; border: none; width: 100%; transition: all 0.2s; box-shadow: 0 6px 24px rgba(201,168,76,0.35); font-family: inherit; text-decoration: none; }
+    .btn-deposit:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(201,168,76,0.5); color: var(--green-dark); }
+    .btn-skip { display: block; text-align: center; color: rgba(255,255,255,0.3); font-size: 0.82rem; margin-top: 14px; cursor: pointer; text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .retreat-highlights { grid-template-columns: 1fr 1fr; }
+      .retreat-oto-hero h1 { font-size: 1.9rem; }
+      .retreat-card-body { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-steps">
+    <div class="ps done"><div class="ps-dot">✓</div><span class="ps-label">Purchase</span></div>
+    <div class="ps done"><div class="ps-dot">✓</div><span class="ps-label">Offer #1</span></div>
+    <div class="ps done"><div class="ps-dot">✓</div><span class="ps-label">Offer #2</span></div>
+    <div class="ps active"><div class="ps-dot">4</div><span class="ps-label">Final Offer</span></div>
+  </div>
+</div>
+
+<div class="retreat-oto-hero">
+  <div class="container">
+    <div class="badge">🌴 FINAL OFFER — SECURE YOUR RETREAT SPOT</div>
+    <h1>Hold Your Spot at the <em>Puerto Rico Nature Immersion Retreat</em> With a $500 Deposit</h1>
+    <p>This deposit secures your place in the next cohort before we open applications publicly. You'll pay the balance after your intake call with our retreat team.</p>
+  </div>
+</div>
+
+<div class="retreat-body">
+
+  <!-- Scarcity bar -->
+  <div class="spots-bar">
+    <p>🔥 Spots filling fast for the next cohort:</p>
+    <div class="progress-track"><div class="progress-fill"></div></div>
+    <div class="spots-count"><span class="claimed">15 of 20 spots claimed</span><span>Only 5 remaining</span></div>
+  </div>
+
+  <div class="retreat-card">
+    <div class="retreat-card-header">
+      <h2>🌴 Puerto Rico Nature Immersion Retreat</h2>
+      <p>Seven days in the tropical rainforests and sacred beaches of Puerto Rico. The ultimate embodied transformation — limited to just 20 conscious seekers per cohort.</p>
+    </div>
+    <div class="retreat-card-body">
+
+      <div class="retreat-highlights">
+        <div class="rh-item"><div class="icon">🌿</div><span class="title">Herb Walks</span><span class="desc">Rainforest plant medicine identification</span></div>
+        <div class="rh-item"><div class="icon">🌊</div><span class="title">Ocean Medicine</span><span class="desc">Wild sea moss harvest & thalassotherapy</span></div>
+        <div class="rh-item"><div class="icon">🔥</div><span class="title">Sacred Ceremony</span><span class="desc">Fire circle, plant medicine & integration</span></div>
+        <div class="rh-item"><div class="icon">🍽️</div><span class="title">Plant-Based Meals</span><span class="desc">All meals, elixirs & superfoods included</span></div>
+        <div class="rh-item"><div class="icon">🏡</div><span class="title">Eco-Lodge Stay</span><span class="desc">7 nights in jungle or beach accommodation</span></div>
+        <div class="rh-item"><div class="icon">🤝</div><span class="title">Sacred Community</span><span class="desc">Lifelong bonds with 19 conscious seekers</span></div>
+      </div>
+
+      <div class="deposit-box">
+        <h3>Reserve Your Spot Today</h3>
+        <p>Secure your place with a fully refundable deposit</p>
+        <div class="deposit-amount">$500</div>
+        <div class="deposit-note">Balance disclosed & due after intake call · Fully refundable if not accepted</div>
+      </div>
+
+      <div class="guarantee-note">
+        <div class="icon">🛡️</div>
+        <p><strong style="color:var(--white);">Fully Refundable Deposit:</strong> If after your intake call the retreat isn't the right fit — for any reason — we will return your full $500 deposit, no questions asked. You risk nothing by securing your spot today.</p>
+      </div>
+
+      <button class="btn-deposit" onclick="acceptDeposit()">
+        🌴 Secure My Retreat Spot — $500 Deposit →
+      </button>
+      <p style="text-align:center; color:rgba(255,255,255,0.3); font-size:0.75rem; margin-top:8px;">Fully refundable · Our team will contact you within 48 hours · Balance due after intake call</p>
+      <a class="btn-skip" onclick="skipToConfirmation()">No thanks, I'll apply through the regular process later</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="../js/cart.js"></script>
+<script>
+  function acceptDeposit() {
+    addToCart('retreat-deposit', 'Puerto Rico Retreat Deposit', 500);
+    window.location.href = 'checkout.html?source=upsell-3&offer=retreat-deposit&price=500';
+  }
+  function skipToConfirmation() {
+    window.location.href = 'order-confirmation.html';
+  }
+</script>
+</body>
+</html>

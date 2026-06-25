@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Special One-Time Offer — Herbal Business Accelerator | Kinetic Hermetics</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body { background: var(--cream-dark); }
+    .upsell-page { padding: 0; }
+
+    /* Progress bar */
+    .progress-bar { background: var(--green-dark); padding: 14px 0; text-align: center; }
+    .progress-steps { display: flex; justify-content: center; align-items: center; gap: 0; max-width: 440px; margin: 0 auto; }
+    .ps { flex: 1; text-align: center; position: relative; }
+    .ps::after { content: '▶'; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.3); font-size: 0.7rem; }
+    .ps:last-child::after { display: none; }
+    .ps-dot { width: 28px; height: 28px; border-radius: 50%; margin: 0 auto 4px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; }
+    .ps.done .ps-dot    { background: var(--gold); color: var(--green-dark); }
+    .ps.active .ps-dot  { background: var(--white); color: var(--green-dark); }
+    .ps.pending .ps-dot { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.4); }
+    .ps-label { font-size: 0.65rem; color: rgba(255,255,255,0.5); display: block; }
+    .ps.done .ps-label   { color: var(--gold); }
+    .ps.active .ps-label { color: var(--white); }
+
+    .oto-header { background: linear-gradient(135deg, var(--green-dark), #0a2a18); padding: 48px 0 36px; text-align: center; }
+    .oto-header .oto-tag { background: var(--red); color: var(--white); display: inline-block; padding: 6px 20px; border-radius: 100px; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 20px; }
+    .oto-header h1 { color: var(--white); font-size: 2.4rem; max-width: 760px; margin: 0 auto 16px; line-height: 1.25; }
+    .oto-header h1 em { color: var(--gold); font-style: normal; }
+    .oto-header p  { color: rgba(255,255,255,0.8); font-size: 1.05rem; max-width: 580px; margin: 0 auto; }
+
+    .oto-body { max-width: 820px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    .timer-box { background: var(--green-dark); border: 2px solid var(--gold); border-radius: var(--radius); padding: 20px 32px; text-align: center; margin-bottom: 36px; }
+    .timer-box p { color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 10px; }
+
+    .offer-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-lg); overflow: hidden; margin-bottom: 28px; }
+    .offer-card-header { background: linear-gradient(135deg, #2d1a00, #6a3c00); padding: 28px 36px; }
+    .offer-card-header h2 { color: var(--gold); font-size: 1.7rem; margin-bottom: 8px; }
+    .offer-card-header p  { color: rgba(255,255,255,0.8); font-size: 0.95rem; }
+    .offer-card-body { padding: 32px 36px; }
+    .what-you-get { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+    .wyg-item { display: flex; gap: 12px; padding: 14px; background: var(--cream); border-radius: var(--radius-sm); }
+    .wyg-item .icon { font-size: 1.6rem; flex-shrink: 0; }
+    .wyg-item h4 { font-size: 0.88rem; color: var(--green-deep); margin-bottom: 3px; }
+    .wyg-item p  { font-size: 0.78rem; color: #666; line-height: 1.4; }
+
+    .value-stack { border: 2px dashed #ddd; border-radius: var(--radius-sm); padding: 20px 24px; margin: 24px 0; }
+    .vs-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.88rem; }
+    .vs-row .name { color: #444; }
+    .vs-row .val  { color: var(--green-mid); font-weight: bold; }
+    .vs-total { display: flex; justify-content: space-between; padding-top: 12px; font-weight: bold; font-size: 1rem; }
+    .vs-total .name { color: var(--green-deep); }
+    .vs-total .val  { color: var(--gold); font-size: 1.2rem; }
+
+    .price-block { text-align: center; margin: 28px 0; }
+    .price-block .orig { color: #aaa; text-decoration: line-through; font-size: 1.2rem; margin-bottom: 4px; }
+    .price-block .sale { font-size: 3.2rem; font-weight: bold; color: var(--gold); line-height: 1; }
+    .price-block .save { display: inline-block; background: #fdecea; color: var(--red); padding: 4px 16px; border-radius: 100px; font-size: 0.82rem; font-weight: bold; margin-top: 8px; }
+    .price-block .pay-note { font-size: 0.8rem; color: #aaa; margin-top: 8px; }
+
+    .btn-yes { background: linear-gradient(135deg, #c9a84c, #e8c96a); color: var(--green-dark); display: block; text-align: center; padding: 22px 36px; border-radius: var(--radius-sm); font-size: 1.15rem; font-weight: bold; cursor: pointer; border: none; width: 100%; transition: all 0.2s; box-shadow: 0 6px 24px rgba(201,168,76,0.4); font-family: inherit; text-decoration: none; }
+    .btn-yes:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(201,168,76,0.5); color: var(--green-dark); }
+    .btn-no { display: block; text-align: center; color: #aaa; font-size: 0.82rem; margin-top: 14px; cursor: pointer; text-decoration: underline; }
+    .btn-no:hover { color: #888; }
+
+    @media (max-width: 600px) {
+      .what-you-get { grid-template-columns: 1fr; }
+      .oto-header h1 { font-size: 1.9rem; }
+      .offer-card-body { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Progress -->
+<div class="progress-bar">
+  <div class="progress-steps">
+    <div class="ps done"><div class="ps-dot">✓</div><span class="ps-label">Purchase</span></div>
+    <div class="ps active"><div class="ps-dot">2</div><span class="ps-label">Special Offer</span></div>
+    <div class="ps pending"><div class="ps-dot">3</div><span class="ps-label">More Offers</span></div>
+    <div class="ps pending"><div class="ps-dot">4</div><span class="ps-label">Confirmation</span></div>
+  </div>
+</div>
+
+<!-- Header -->
+<div class="oto-header">
+  <div class="container">
+    <div class="oto-tag">⚡ ONE-TIME OFFER — NEVER AVAILABLE AGAIN AT THIS PRICE</div>
+    <h1>Wait! Add the <em>Herbal Business Accelerator</em> for Just $197</h1>
+    <p>Your purchase just unlocked a special upgrade. This offer disappears when you leave this page — it will never be available at this price again.</p>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="oto-body">
+
+  <!-- Timer -->
+  <div class="timer-box">
+    <p>⏰ This offer expires in:</p>
+    <div class="countdown-timer" id="oto1-timer">
+      <div class="countdown-unit"><span class="num" data-h>00</span><span class="label">Hours</span></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span class="num" data-m>14</span><span class="label">Mins</span></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span class="num" data-s>59</span><span class="label">Secs</span></div>
+    </div>
+  </div>
+
+  <div class="offer-card">
+    <div class="offer-card-header">
+      <h2>Herbal Business Accelerator</h2>
+      <p>Everything you need to turn your herbal knowledge into a thriving, profitable wellness business — built around your passion and expertise.</p>
+    </div>
+    <div class="offer-card-body">
+      <p style="color:#555; font-size:0.95rem; line-height:1.7;">Most herbalists and wellness practitioners waste years trying to figure out the business side on their own. This accelerator compresses years of hard-won knowledge into a clear, actionable roadmap — so you can serve more people and create sustainable income doing what you love.</p>
+
+      <div class="what-you-get">
+        <div class="wyg-item"><div class="icon">🏪</div><div><h4>Product Line Creation</h4><p>Design and develop your own herbal product line from formulation to packaging and sourcing.</p></div></div>
+        <div class="wyg-item"><div class="icon">📣</div><div><h4>Marketing & Positioning</h4><p>How to attract soulful clients who value your work — without feeling salesy or inauthentic.</p></div></div>
+        <div class="wyg-item"><div class="icon">💻</div><div><h4>Online Course Creation</h4><p>Monetize your expertise by creating and selling online courses, memberships, and digital products.</p></div></div>
+        <div class="wyg-item"><div class="icon">📋</div><div><h4>Legal & Compliance Guide</h4><p>Navigate herbal product regulations, disclaimers, and labeling requirements with confidence.</p></div></div>
+        <div class="wyg-item"><div class="icon">📈</div><div><h4>Pricing & Revenue Models</h4><p>Proven pricing strategies for products, services, courses, and retreat programs.</p></div></div>
+        <div class="wyg-item"><div class="icon">🤝</div><div><h4>Partnership & Wholesale</h4><p>How to build partnerships, wholesale accounts, and referral networks that grow passively.</p></div></div>
+      </div>
+
+      <div class="value-stack">
+        <h4 style="color:var(--green-deep); margin-bottom:12px; font-size:0.88rem;">What's Included — Full Value:</h4>
+        <div class="vs-row"><span class="name">Herbal Business Foundations Course (6 modules)</span><span class="val">$497</span></div>
+        <div class="vs-row"><span class="name">Product Line Creation Masterclass</span><span class="val">$297</span></div>
+        <div class="vs-row"><span class="name">Digital Business Templates & SOPs</span><span class="val">$197</span></div>
+        <div class="vs-row"><span class="name">Legal & Compliance Herb Business Guide</span><span class="val">$147</span></div>
+        <div class="vs-row"><span class="name">Private Business Community Access</span><span class="val">$97</span></div>
+        <div class="vs-total"><span class="name">Total Value:</span><span class="val">$1,235</span></div>
+      </div>
+
+      <div class="price-block">
+        <div class="orig">Regular Price: $497</div>
+        <div class="sale">$197</div>
+        <div class="save">You Save $300 — Today Only</div>
+        <div class="pay-note">One-time payment · Lifetime access · 30-day guarantee</div>
+      </div>
+
+      <button class="btn-yes" onclick="acceptOffer()">
+        YES! Add Herbal Business Accelerator — $197 →
+      </button>
+      <a class="btn-no" onclick="declineOffer()">No thanks, I don't want to build a herbal business</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="../js/countdown.js"></script>
+<script>
+  startCountdown('oto1-timer', 0, 15, 0);
+
+  function acceptOffer() {
+    addToCart('herbal-biz-accelerator', 'Herbal Business Accelerator', 197);
+    window.location.href = 'upsell-2.html';
+  }
+
+  function declineOffer() {
+    window.location.href = 'upsell-2.html';
+  }
+</script>
+<script src="../js/cart.js"></script>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Herbal Products — Kinetic Hermetics</title>
+  <meta name="description" content="Shop premium medicinal herbs, mushrooms, essential oils, and digital guides. Ethically sourced, lab-tested, 30-day guarantee.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .shop-hero { background: linear-gradient(135deg, var(--green-dark), #0a2a18); padding: 70px 0 50px; text-align: center; }
+    .shop-hero h1 { color: var(--white); font-size: 2.6rem; margin-bottom: 12px; }
+    .shop-hero p  { color: rgba(255,255,255,0.75); font-size: 1rem; max-width: 560px; margin: 0 auto; }
+
+    /* Filter tabs */
+    .filter-bar { background: var(--white); border-bottom: 1px solid #eee; position: sticky; top: 68px; z-index: 100; }
+    .filter-tabs { display: flex; gap: 0; overflow-x: auto; }
+    .filter-tab { padding: 16px 24px; font-size: 0.88rem; cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; color: #666; transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none; font-family: inherit; }
+    .filter-tab:hover  { color: var(--green-mid); }
+    .filter-tab.active { color: var(--green-deep); border-bottom-color: var(--gold); font-weight: bold; }
+
+    /* Products layout */
+    .shop-body { background: var(--cream); padding: 48px 0 80px; }
+    .shop-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .prod-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex; flex-direction: column;
+    }
+    .prod-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .prod-img {
+      height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+    }
+    .bg-forest { background: linear-gradient(135deg, #1a3a2a, #2d5a3d); }
+    .bg-ocean  { background: linear-gradient(135deg, #0d2840, #1a5a6a); }
+    .bg-earth  { background: linear-gradient(135deg, #3a1a00, #6a3000); }
+    .bg-violet { background: linear-gradient(135deg, #1a0a2a, #3a1a4a); }
+    .bg-gold   { background: linear-gradient(135deg, #2a1a00, #5a3a00); }
+    .prod-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+    .prod-cat  { font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; color: var(--green-mid); margin-bottom: 6px; }
+    .prod-body h3 { font-size: 0.95rem; color: var(--green-deep); margin-bottom: 6px; line-height: 1.3; }
+    .prod-body p  { font-size: 0.8rem; color: #666; line-height: 1.5; flex: 1; margin-bottom: 12px; }
+    .prod-footer { display: flex; align-items: center; justify-content: space-between; }
+    .prod-price { font-size: 1.05rem; font-weight: bold; color: var(--green-deep); }
+    .prod-price .unit { font-size: 0.72rem; color: #aaa; font-weight: normal; display: block; }
+    .btn-add { background: var(--green-deep); color: var(--white); border: none; border-radius: var(--radius-sm); padding: 8px 14px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+    .btn-add:hover { background: var(--green-light); }
+
+    /* Section headers */
+    .cat-header { display: flex; align-items: center; gap: 16px; margin: 48px 0 24px; }
+    .cat-header h2 { font-size: 1.5rem; color: var(--green-deep); }
+    .cat-header::before, .cat-header::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); }
+    .cat-header::after { background: linear-gradient(90deg, transparent, var(--gold)); }
+
+    /* Trust bar */
+    .trust-bar { background: var(--green-deep); padding: 20px 0; }
+    .trust-items { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+    .trust-item { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.85); font-size: 0.85rem; }
+    .trust-item .icon { font-size: 1.3rem; }
+
+    /* Cart sidebar */
+    .cart-fab {
+      position: fixed; bottom: 28px; left: 28px;
+      background: var(--green-deep); color: var(--white);
+      border: none; border-radius: 100px;
+      padding: 14px 22px; font-size: 0.9rem; cursor: pointer;
+      box-shadow: var(--shadow); z-index: 900;
+      display: flex; align-items: center; gap: 8px;
+      transition: background 0.2s;
+    }
+    .cart-fab:hover { background: var(--green-light); }
+    .cart-count-badge {
+      background: var(--gold); color: var(--green-dark);
+      border-radius: 50%; width: 20px; height: 20px;
+      display: none; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: bold;
+    }
+
+    @media (max-width: 1000px) { .shop-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 700px)  { .shop-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 440px)  { .shop-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="../../index.html" class="logo" style="color:var(--gold);font-weight:bold;text-decoration:none;">🌿 Kinetic Hermetics</a>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../webinar-registration.html">Free Webinar</a></li>
+      <li><a href="../sales.html">Academy</a></li>
+      <li><a href="../retreats.html">Retreats</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Trust bar -->
+<div class="trust-bar">
+  <div class="trust-items">
+    <div class="trust-item"><span class="icon">🌿</span> 100% Organic & Ethically Sourced</div>
+    <div class="trust-item"><span class="icon">🔬</span> Lab-Tested for Purity</div>
+    <div class="trust-item"><span class="icon">🚚</span> Ships Within 24 Hours</div>
+    <div class="trust-item"><span class="icon">🛡️</span> 30-Day Money-Back Guarantee</div>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="shop-hero">
+  <div class="container">
+    <div class="hero-badge">Premium Herbal Collection</div>
+    <h1>Nature's Most Powerful Remedies</h1>
+    <p>Every product is ethically sourced, third-party tested, and backed by our 30-day satisfaction guarantee.</p>
+  </div>
+</section>
+
+<!-- Filter tabs -->
+<div class="filter-bar">
+  <div class="container">
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterCat('all', this)">All Products</button>
+      <button class="filter-tab" onclick="filterCat('herbal', this)">Herbal Collection</button>
+      <button class="filter-tab" onclick="filterCat('mushrooms', this)">Medicinal Mushrooms</button>
+      <button class="filter-tab" onclick="filterCat('ocean', this)">Ocean Superfoods</button>
+      <button class="filter-tab" onclick="filterCat('oils', this)">Essential Oils</button>
+      <button class="filter-tab" onclick="filterCat('digital', this)">Digital Products</button>
+    </div>
+  </div>
+</div>
+
+<!-- Products -->
+<section class="shop-body">
+  <div class="container">
+
+    <!-- Herbal Collection -->
+    <div class="cat-header" id="herbal"><h2>🌿 Herbal Collection</h2></div>
+    <div class="shop-grid">
+      <div class="prod-card" data-cat="herbal">
+        <div class="prod-img bg-gold">🌿</div>
+        <div class="prod-body">
+          <span class="prod-cat">Herbal</span>
+          <h3>Ceremonial Palo Santo Bundle</h3>
+          <p>Sacred wood for energy clearing. Purifies spaces and elevates consciousness for meditation.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$14.99 <span class="unit">per bundle</span></div>
+            <button class="btn-add" onclick="addToCart('palo-santo','Ceremonial Palo Santo',14.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="herbal">
+        <div class="prod-img bg-earth">🌾</div>
+        <div class="prod-body">
+          <span class="prod-cat">Herbal</span>
+          <h3>Golden Turmeric Ceremony Blend</h3>
+          <p>Organic, fair-trade. Anti-inflammatory powerhouse with black pepper, cinnamon, and ginger.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$21.99 <span class="unit">200g</span></div>
+            <button class="btn-add" onclick="addToCart('turmeric','Golden Turmeric Blend',21.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="herbal">
+        <div class="prod-img bg-gold">🍫</div>
+        <div class="prod-body">
+          <span class="prod-cat">Herbal</span>
+          <h3>Ceremonial Grade Cacao</h3>
+          <p>Heart-opening and cardiovascular-supporting. Mood elevation and spiritual communion.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$34.99 <span class="unit">200g</span></div>
+            <button class="btn-add" onclick="addToCart('cacao','Ceremonial Cacao',34.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="herbal">
+        <div class="prod-img bg-forest">🌱</div>
+        <div class="prod-body">
+          <span class="prod-cat">Herbal</span>
+          <h3>Moringa Leaf Powder</h3>
+          <p>Complete nutrition from nature. 7x vitamin C of oranges, rich in iron, calcium, and protein.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$22.99 <span class="unit">100g</span></div>
+            <button class="btn-add" onclick="addToCart('moringa','Moringa Leaf Powder',22.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medicinal Mushrooms -->
+    <div class="cat-header" id="mushrooms"><h2>🍄 Medicinal Mushroom Collection</h2></div>
+    <div class="shop-grid">
+      <div class="prod-card" data-cat="mushrooms">
+        <div class="prod-img bg-earth">🍄</div>
+        <div class="prod-body">
+          <span class="prod-cat">Mushrooms</span>
+          <h3>Reishi (Lingzhi) Powder</h3>
+          <p>The "Mushroom of Immortality." Stress relief, immune enhancement, deep sleep support.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$32.99 <span class="unit">100g</span></div>
+            <button class="btn-add" onclick="addToCart('reishi','Reishi Powder',32.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="mushrooms">
+        <div class="prod-img bg-ocean">🧠</div>
+        <div class="prod-body">
+          <span class="prod-cat">Mushrooms</span>
+          <h3>Lion's Mane Capsules</h3>
+          <p>Cognitive clarity, neuroplasticity, focus. Nature's ultimate brain supplement.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$28.99 <span class="unit">60 caps</span></div>
+            <button class="btn-add" onclick="addToCart('lions-mane','Lions Mane Capsules',28.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="mushrooms">
+        <div class="prod-img bg-forest">⚡</div>
+        <div class="prod-body">
+          <span class="prod-cat">Mushrooms</span>
+          <h3>Cordyceps Energy Blend</h3>
+          <p>Natural energy without caffeine. Stamina, athletic performance, and chi flow.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$26.99 <span class="unit">60 caps</span></div>
+            <button class="btn-add" onclick="addToCart('cordyceps','Cordyceps Blend',26.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="mushrooms">
+        <div class="prod-img bg-earth">🛡️</div>
+        <div class="prod-body">
+          <span class="prod-cat">Mushrooms</span>
+          <h3>Chaga Immune Supreme</h3>
+          <p>Siberian forest treasure. The most antioxidant-rich mushroom available.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$34.99 <span class="unit">100g</span></div>
+            <button class="btn-add" onclick="addToCart('chaga','Chaga Immune Supreme',34.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ocean Superfoods -->
+    <div class="cat-header" id="ocean"><h2>🌊 Ocean & Mineral Superfoods</h2></div>
+    <div class="shop-grid">
+      <div class="prod-card" data-cat="ocean">
+        <div class="prod-img bg-ocean">🌊</div>
+        <div class="prod-body">
+          <span class="prod-cat">Ocean</span>
+          <h3>Organic Sea Moss (Irish Moss)</h3>
+          <p>92 of 102 minerals your body needs. Thyroid support, gut health, skin radiance, energy.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$24.99 <span class="unit">100g jar</span></div>
+            <button class="btn-add" onclick="addToCart('sea-moss','Organic Sea Moss',24.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="ocean">
+        <div class="prod-img bg-ocean">🌿</div>
+        <div class="prod-body">
+          <span class="prod-cat">Ocean</span>
+          <h3>Bladderwrack</h3>
+          <p>Ocean-harvested mineral complex. Rich in iodine for thyroid function and metabolism.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$16.99 <span class="unit">100g</span></div>
+            <button class="btn-add" onclick="addToCart('bladderwrack','Bladderwrack',16.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="ocean">
+        <div class="prod-img bg-ocean">🧂</div>
+        <div class="prod-body">
+          <span class="prod-cat">Ocean</span>
+          <h3>Atlantic Sea Salt with Trace Minerals</h3>
+          <p>Unrefined, sun-dried. Electrolyte balance and cellular hydration support.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$12.99 <span class="unit">container</span></div>
+            <button class="btn-add" onclick="addToCart('sea-salt','Atlantic Sea Salt',12.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="ocean">
+        <div class="prod-img bg-forest">💚</div>
+        <div class="prod-body">
+          <span class="prod-cat">Ocean</span>
+          <h3>Spirulina Superfood Blend</h3>
+          <p>Chlorophyll-rich and body-alkalizing. Protein, vitamins, minerals, and vitality.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$26.99 <span class="unit">100g</span></div>
+            <button class="btn-add" onclick="addToCart('spirulina','Spirulina Blend',26.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Essential Oils -->
+    <div class="cat-header" id="oils"><h2>💧 Essential Oils</h2></div>
+    <div class="shop-grid">
+      <div class="prod-card" data-cat="oils">
+        <div class="prod-img bg-gold">✨</div>
+        <div class="prod-body">
+          <span class="prod-cat">Essential Oils</span>
+          <h3>Sacred Frankincense Oil (Pure)</h3>
+          <p>Ancient ceremonial grade. Meditation, spiritual practice, skin rejuvenation, immune support.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$29.99 <span class="unit">15ml</span></div>
+            <button class="btn-add" onclick="addToCart('frankincense','Sacred Frankincense Oil',29.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="oils">
+        <div class="prod-img bg-earth">🌑</div>
+        <div class="prod-body">
+          <span class="prod-cat">Essential Oils</span>
+          <h3>Myrrh Oil (Commiphora myrrha)</h3>
+          <p>Grounding and healing. Wound healing, meditation, emotional balance.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$27.99 <span class="unit">15ml</span></div>
+            <button class="btn-add" onclick="addToCart('myrrh','Myrrh Oil',27.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="oils">
+        <div class="prod-img bg-violet">💜</div>
+        <div class="prod-body">
+          <span class="prod-cat">Essential Oils</span>
+          <h3>Lavender Spiritual Blend</h3>
+          <p>Sleep support, anxiety relief, spiritual peace. Calming consciousness elevation.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$19.99 <span class="unit">15ml</span></div>
+            <button class="btn-add" onclick="addToCart('lavender','Lavender Spiritual Blend',19.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="oils">
+        <div class="prod-img bg-forest">💨</div>
+        <div class="prod-body">
+          <span class="prod-cat">Essential Oils</span>
+          <h3>Peppermint Clarity Oil</h3>
+          <p>Mental focus, energy, and digestive support. Awakens consciousness and clarity.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$18.99 <span class="unit">15ml</span></div>
+            <button class="btn-add" onclick="addToCart('peppermint','Peppermint Clarity Oil',18.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Digital Products -->
+    <div class="cat-header" id="digital"><h2>📖 Digital Products — Instant Access</h2></div>
+    <div class="shop-grid">
+      <div class="prod-card" data-cat="digital">
+        <div class="prod-img bg-forest">📚</div>
+        <div class="prod-body">
+          <span class="prod-cat">Digital</span>
+          <h3>The Sacred Apothecary: 50 Healing Herbs</h3>
+          <p>200+ pages covering history, properties, preparations, and safety for 50 medicinal herbs.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$17.99 <span class="unit">PDF download</span></div>
+            <button class="btn-add" onclick="addToCart('sacred-apothecary','The Sacred Apothecary',17.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="digital">
+        <div class="prod-img bg-ocean">🌊</div>
+        <div class="prod-body">
+          <span class="prod-cat">Digital</span>
+          <h3>Ocean's Medicine: Sea Moss & Bladderwrack</h3>
+          <p>30 recipes and protocols for thyroid support, gut healing, and skin radiance.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$9.99 <span class="unit">PDF download</span></div>
+            <button class="btn-add" onclick="addToCart('oceans-medicine','Oceans Medicine Guide',9.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="digital">
+        <div class="prod-img bg-earth">🍄</div>
+        <div class="prod-body">
+          <span class="prod-cat">Digital</span>
+          <h3>Mushroom Mastery: Complete Guide to Medicinal Fungi</h3>
+          <p>Deep dive into 20 therapeutic mushrooms — preparation, dosing, combinations.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$14.99 <span class="unit">PDF download</span></div>
+            <button class="btn-add" onclick="addToCart('mushroom-mastery','Mushroom Mastery',14.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card" data-cat="digital" style="border:2px solid var(--gold);">
+        <div class="prod-img bg-gold">⭐</div>
+        <div class="prod-body">
+          <span class="prod-cat" style="color:var(--gold);">Best Value Bundle</span>
+          <h3>Complete Herbal Wellness Collection (All 6 Books)</h3>
+          <p>All 6 e-books + lifetime updates + community access. Save $23 vs buying separately.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$44.99 <small style="text-decoration:line-through;color:#aaa;font-size:0.75rem;">$67.94</small></div>
+            <button class="btn-add" onclick="addToCart('complete-bundle','Complete Wellness Bundle',44.99)">+ Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Cart FAB -->
+<button class="cart-fab" onclick="goToCart()">
+  🛒 Cart <span class="cart-count-badge cart-count" id="cart-count-fab">0</span>
+</button>
+
+<!-- Chatbot -->
+<button id="chatbot-toggle" onclick="toggleChat()" title="Chat with our concierge">🌿</button>
+<div id="chatbot-window">
+  <div class="chatbot-header">
+    <div class="chatbot-avatar">🌿</div>
+    <div class="chatbot-header-info"><h4>Herbal Concierge</h4><span>🟢 Ask me anything</span></div>
+    <button id="chatbot-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chatbot-messages" id="chatbot-messages">
+    <div class="chat-msg bot">Welcome to our product catalog! 🌿 I can help you find the right herbs for your specific health goals. What are you looking to address?</div>
+  </div>
+  <div class="chatbot-quick-replies" id="quick-replies">
+    <button class="quick-reply" onclick="quickReply('I want more energy')">More energy</button>
+    <button class="quick-reply" onclick="quickReply('I want better sleep')">Better sleep</button>
+    <button class="quick-reply" onclick="quickReply('I want immune support')">Immunity</button>
+    <button class="quick-reply" onclick="quickReply('I want mental clarity')">Mental clarity</button>
+  </div>
+  <div class="chatbot-input">
+    <input type="text" id="chat-input" placeholder="Ask about any herb..." onkeydown="if(event.key==='Enter') sendChat()">
+    <button onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none; justify-content:center; text-align:center;">
+      <span>&copy; 2026 Kinetic Hermetics. &nbsp;|&nbsp; <a href="../privacy.html">Privacy</a> &nbsp;|&nbsp; <a href="../terms.html">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../js/cart.js"></script>
+<script src="../../js/chatbot.js"></script>
+<script>
+function filterCat(cat, btn) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.prod-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+  document.querySelectorAll('.cat-header').forEach(h => {
+    if (cat === 'all') { h.style.display = ''; return; }
+    h.style.display = h.id === cat ? '' : 'none';
+  });
+}
+
+function goToCart() {
+  const cart = getCart();
+  if (!cart.length) { alert('Your cart is empty. Add some products first!'); return; }
+  const params = cart.map(i => `items[]=${encodeURIComponent(i.name)}&prices[]=${i.price}&qtys[]=${i.qty}`).join('&');
+  window.location.href = `../checkout.html?${params}&total=${getCartTotal().toFixed(2)}`;
+}
+
+// Update cart FAB display
+document.addEventListener('DOMContentLoaded', () => {
+  const fab = document.getElementById('cart-count-fab');
+  if (fab) {
+    const count = getCart().reduce((s,i) => s+i.qty, 0);
+    fab.textContent = count;
+    fab.style.display = count > 0 ? 'flex' : 'none';
+  }
+});
+</script>
+</body>
+</html>

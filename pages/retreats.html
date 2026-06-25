@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puerto Rico Nature Immersion Retreat | Kinetic Hermetics</title>
+  <meta name="description" content="7 days in the tropical rainforests and sacred beaches of Puerto Rico. Herb walks, ceremony, meditation, and full transformation. Limited to 20 participants.">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .retreat-hero {
+      background: linear-gradient(160deg, #041a0a 0%, #0a2a14 40%, #0d3a1a 100%);
+      padding: 100px 0 80px; text-align: center; position: relative; overflow: hidden;
+    }
+    .retreat-hero::before {
+      content: '🌴🌿🌺🌴🌿🌺🌴';
+      position: absolute; bottom: -10px; left: 0; right: 0;
+      font-size: 2.5rem; opacity: 0.12; letter-spacing: 8px;
+      white-space: nowrap; overflow: hidden;
+    }
+    .retreat-hero h1 { color: var(--white); font-size: 3rem; max-width: 760px; margin: 0 auto 20px; }
+    .retreat-hero h1 em { color: var(--gold); font-style: normal; }
+    .retreat-hero p  { color: rgba(255,255,255,0.8); font-size: 1.1rem; max-width: 600px; margin: 0 auto 36px; }
+    .retreat-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; margin-top: 40px; }
+    .r-stat { text-align: center; }
+    .r-stat .num  { font-size: 2rem; font-weight: bold; color: var(--gold); display: block; }
+    .r-stat .label { font-size: 0.82rem; color: rgba(255,255,255,0.6); }
+
+    /* Itinerary */
+    .itinerary-section { background: var(--cream); padding: 80px 0; }
+    .day-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+    .day-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      border-top: 4px solid var(--green-light);
+    }
+    .day-card:nth-child(even) { border-top-color: var(--gold); }
+    .day-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--green-mid); font-weight: bold; margin-bottom: 6px; }
+    .day-card h3 { font-size: 1.05rem; color: var(--green-deep); margin-bottom: 10px; }
+    .day-card ul { list-style: none; }
+    .day-card ul li { font-size: 0.85rem; color: #555; padding: 5px 0; border-bottom: 1px solid #f5f5f5; }
+    .day-card ul li::before { content: '✦ '; color: var(--gold); font-size: 0.7rem; }
+
+    /* Experience grid */
+    .experiences-section { background: var(--green-deep); padding: 80px 0; }
+    .exp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+    .exp-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .exp-card:hover { border-color: var(--gold); background: rgba(255,255,255,0.09); }
+    .exp-icon { font-size: 2.4rem; margin-bottom: 14px; }
+    .exp-card h3 { color: var(--gold); font-size: 1.05rem; margin-bottom: 8px; }
+    .exp-card p  { color: rgba(255,255,255,0.7); font-size: 0.88rem; line-height: 1.6; }
+
+    /* Included section */
+    .included-section { background: var(--white); padding: 80px 0; }
+    .included-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .check-list { list-style: none; margin-top: 16px; }
+    .check-list li { padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.93rem; color: #444; }
+    .check-list li::before { content: '✓ '; color: var(--green-mid); font-weight: bold; }
+    .not-list li::before { content: '✗ '; color: #ccc; }
+
+    /* Application form */
+    .apply-section { background: var(--cream-dark); padding: 80px 0; }
+    .apply-box { max-width: 680px; margin: 0 auto; background: var(--white); border-radius: var(--radius); padding: 48px; box-shadow: var(--shadow-lg); }
+    .apply-box h2 { color: var(--green-deep); font-size: 1.8rem; margin-bottom: 8px; }
+    .apply-box .subtitle { color: #666; margin-bottom: 32px; font-size: 0.95rem; }
+    .cohort-info { background: var(--cream); border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 28px; }
+    .cohort-info p { font-size: 0.88rem; color: #555; margin: 4px 0; }
+    .cohort-info strong { color: var(--green-deep); }
+
+    @media (max-width: 800px) {
+      .day-grid { grid-template-columns: 1fr 1fr; }
+      .exp-grid { grid-template-columns: 1fr 1fr; }
+      .included-grid { grid-template-columns: 1fr; }
+      .retreat-hero h1 { font-size: 2.2rem; }
+    }
+    @media (max-width: 540px) {
+      .day-grid, .exp-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="../index.html" class="logo" style="color:var(--gold);font-weight:bold;text-decoration:none;">🌿 Kinetic Hermetics</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="webinar-registration.html">Free Webinar</a></li>
+      <li><a href="products/index.html">Products</a></li>
+      <li><a href="sales.html">Academy</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="retreat-hero">
+  <div class="container">
+    <div class="hero-badge">Puerto Rico · 7-Day Immersion</div>
+    <h1>Return to Nature's <em>Original Intelligence</em></h1>
+    <p>Leave the noise behind. Seven transformational days in the lush tropical rainforests and sacred beaches of Puerto Rico — with a small cohort of conscious seekers.</p>
+    <a href="#apply" class="btn btn-primary btn-lg">Apply for the Next Cohort →</a>
+    <div class="retreat-stats">
+      <div class="r-stat"><span class="num">7</span><span class="label">Days Immersed</span></div>
+      <div class="r-stat"><span class="num">Max 20</span><span class="label">Participants</span></div>
+      <div class="r-stat"><span class="num">100%</span><span class="label">Plant-Based Meals</span></div>
+      <div class="r-stat"><span class="num">3×/yr</span><span class="label">Cohorts per Year</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Experiences -->
+<section class="experiences-section">
+  <div class="container">
+    <div class="section-center">
+      <span class="section-label" style="background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid var(--gold);">What Awaits You</span>
+      <h2 class="section-title" style="color:var(--gold);">Six Pillars of Transformation</h2>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-card">
+        <div class="exp-icon">🌿</div>
+        <h3>Rainforest Herb Walks</h3>
+        <p>Guided identification of tropical medicinal plants in their native habitat. Learn to see the forest as a living pharmacy — a skill that changes how you see the world forever.</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-icon">🌊</div>
+        <h3>Ocean Medicine Immersion</h3>
+        <p>Wild sea moss harvesting, ocean swimming, and thalassotherapy sessions. Let the mineral-rich Caribbean waters remineralize your cells and reset your nervous system.</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-icon">🔥</div>
+        <h3>Sacred Ceremony & Ritual</h3>
+        <p>Evening ceremonies guided by experienced facilitators. Plant medicine, fire circles, sound healing, and hermetic ritual for deep integration and spiritual opening.</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-icon">🧘</div>
+        <h3>Daily Embodied Practice</h3>
+        <p>Morning yoga, breathwork, and grounding practices at sunrise. Evening meditation and journaling. Build the daily rhythm that continues transforming you after you return home.</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-icon">🍽️</div>
+        <h3>Plant-Based Ceremonial Meals</h3>
+        <p>Every meal prepared by our chef using local, wild, and medicinal ingredients. Cacao ceremonies, herbal elixirs, and superfood feasts as medicine in themselves.</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-icon">🤝</div>
+        <h3>Sacred Community</h3>
+        <p>Twenty people who chose transformation over comfort. The bonds formed on this retreat become lifelong relationships. You leave with a community that holds your highest vision.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Itinerary -->
+<section class="itinerary-section">
+  <div class="container">
+    <div class="section-center">
+      <span class="section-label">Sample Itinerary</span>
+      <h2 class="section-title">Seven Days of Deep Immersion</h2>
+      <p class="section-subtitle">Every retreat is co-created with the group — this is a representative flow, not a rigid schedule.</p>
+    </div>
+    <div class="day-grid">
+      <div class="day-card">
+        <div class="day-label">Day 1</div>
+        <h3>Arrival & Grounding</h3>
+        <ul>
+          <li>Airport pickup & welcome</li>
+          <li>Setting intentions ceremony</li>
+          <li>Welcome feast & introductions</li>
+          <li>Evening grounding meditation</li>
+        </ul>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Day 2</div>
+        <h3>The Rainforest Temple</h3>
+        <ul>
+          <li>Sunrise yoga & breathwork</li>
+          <li>Guided rainforest herb walk (4hr)</li>
+          <li>Herbal preparation workshop</li>
+          <li>Fire circle & sharing</li>
+        </ul>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Day 3</div>
+        <h3>Ocean Medicine Day</h3>
+        <ul>
+          <li>Wild sea moss harvesting</li>
+          <li>Ocean swimming & thalassotherapy</li>
+          <li>Sea moss preparation class</li>
+          <li>Sound healing ceremony</li>
+        </ul>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Day 4</div>
+        <h3>Hermetic Deep Dive</h3>
+        <ul>
+          <li>7 Hermetic Laws workshop</li>
+          <li>Personal protocol creation</li>
+          <li>Cacao ceremony</li>
+          <li>Journaling & integration</li>
+        </ul>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Day 5</div>
+        <h3>Sacred Ceremony</h3>
+        <ul>
+          <li>Fasting & preparation</li>
+          <li>Sacred plant ceremony (evening)</li>
+          <li>Guided integration support</li>
+          <li>Rest & integration</li>
+        </ul>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Day 6 & 7</div>
+        <h3>Integration & Return</h3>
+        <ul>
+          <li>Integration circle</li>
+          <li>Personal action plan</li>
+          <li>Closing ceremony & feast</li>
+          <li>Lifelong community activation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Included -->
+<section class="included-section">
+  <div class="container">
+    <div class="included-grid">
+      <div>
+        <span class="section-label">What's Included</span>
+        <h2 class="section-title">Everything You Need for Full Immersion</h2>
+        <ul class="check-list">
+          <li>7 nights accommodation in jungle or beach eco-lodge</li>
+          <li>All plant-based meals (3/day) + herbal elixirs</li>
+          <li>All activities, workshops, and ceremonies</li>
+          <li>Airport pickup and drop-off (SJU)</li>
+          <li>All herbal materials and products used</li>
+          <li>Personalized 90-day post-retreat protocol</li>
+          <li>Lifetime alumni community access</li>
+          <li>Full recording of all workshops</li>
+        </ul>
+      </div>
+      <div>
+        <span class="section-label">Not Included</span>
+        <h2 class="section-title" style="font-size:1.6rem;">A Few Things to Plan For</h2>
+        <ul class="check-list not-list">
+          <li>International flights to San Juan (SJU)</li>
+          <li>Travel insurance (strongly recommended)</li>
+          <li>Personal spending money</li>
+          <li>Optional: extra excursions and tours</li>
+        </ul>
+        <div style="margin-top:32px; padding:20px; background:var(--cream); border-radius:var(--radius-sm); border-left:4px solid var(--gold);">
+          <p style="font-size:0.88rem; color:#555;"><strong style="color:var(--green-deep);">Application Required:</strong> We review every application to ensure this experience is the right fit. We ask a few questions about your background and intentions. Most applicants hear back within 48 hours.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Application -->
+<section class="apply-section" id="apply">
+  <div class="container">
+    <div class="apply-box">
+      <h2>Apply for the Retreat</h2>
+      <p class="subtitle">Complete the form below and our team will reach out within 48 hours. This is not a payment — it's an application conversation.</p>
+
+      <div class="cohort-info">
+        <p><strong>Next Cohort:</strong> Applications open now — limited to 20 participants</p>
+        <p><strong>Investment:</strong> Disclosed during application call (varies by room type)</p>
+        <p><strong>Deposit:</strong> $500 to hold your spot upon acceptance</p>
+      </div>
+
+      <form id="retreat-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name *</label>
+            <input type="text" id="rf-first" required placeholder="First name">
+          </div>
+          <div class="form-group">
+            <label>Last Name *</label>
+            <input type="text" id="rf-last" required placeholder="Last name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="rf-email" required placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>Phone *</label>
+          <input type="tel" id="rf-phone" required placeholder="(555) 123-4567">
+        </div>
+        <div class="form-group">
+          <label>What is your primary intention for attending this retreat? *</label>
+          <select id="rf-intention" required>
+            <option value="">Select one…</option>
+            <option value="healing">Physical healing & restoration</option>
+            <option value="spiritual">Spiritual awakening & growth</option>
+            <option value="herbal">Deepen herbal knowledge</option>
+            <option value="community">Connect with like-minded community</option>
+            <option value="transformation">Complete life transformation</option>
+            <option value="ceremony">Sacred ceremony experience</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tell us a little about yourself and why you feel called to this retreat *</label>
+          <textarea id="rf-message" rows="4" required placeholder="Share your story and what draws you here…" style="resize:vertical;"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Have you attended any of our webinars or courses?</label>
+          <select id="rf-prior">
+            <option value="no">No, this is my first connection</option>
+            <option value="webinar">Yes, I attended a webinar</option>
+            <option value="course-1">Yes, I completed Tier 1</option>
+            <option value="course-2">Yes, I completed Tier 2</option>
+            <option value="course-3">Yes, I'm in Tier 3</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg">Submit My Application →</button>
+        <p style="text-align:center; font-size:0.75rem; color:#aaa; margin-top:10px;">No payment required. We'll contact you within 48 hours.</p>
+      </form>
+
+      <div id="retreat-success" style="display:none; text-align:center; padding:32px 0;">
+        <div style="font-size:3rem; margin-bottom:16px;">🌴</div>
+        <h3 style="color:var(--green-deep); margin-bottom:8px;">Application Received!</h3>
+        <p style="color:#555;">Thank you for your application. Our retreat coordinator will reach out within 48 hours to schedule a brief conversation and answer your questions.</p>
+        <a href="webinar-registration.html" class="btn btn-green" style="margin-top:24px;">While you wait — join our free webinar →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none; justify-content:center; text-align:center;">
+      <span>&copy; 2026 Kinetic Hermetics. | <a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('retreat-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const data = {
+    firstName: document.getElementById('rf-first').value,
+    lastName:  document.getElementById('rf-last').value,
+    email:     document.getElementById('rf-email').value,
+    phone:     document.getElementById('rf-phone').value,
+    intention: document.getElementById('rf-intention').value,
+    message:   document.getElementById('rf-message').value,
+    prior:     document.getElementById('rf-prior').value
+  };
+  try {
+    await fetch('/api/email/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: data.email, firstName: data.firstName, lastName: data.lastName, source: 'retreat-application', tags: ['retreat-applicant'] })
+    });
+  } catch(e) {}
+  document.getElementById('retreat-form').style.display = 'none';
+  document.getElementById('retreat-success').style.display = 'block';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kinetic Hermetics — Nature Is The Original Intelligence</title>
+  <meta name="description" content="Ancient herbal wisdom, hermetic sciences, and conscious living. Shop premium herbs, attend transformational webinars, and enroll in online courses.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ===== HOMEPAGE-SPECIFIC ===== */
+    .home-hero {
+      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-deep) 50%, #0a2e18 100%);
+      padding: 110px 0 90px;
+      position: relative;
+      overflow: hidden;
+    }
+    .home-hero::after {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .home-hero h1 { color: var(--white); font-size: 3.2rem; max-width: 760px; margin-bottom: 20px; }
+    .home-hero .sub { color: rgba(255,255,255,0.8); font-size: 1.2rem; max-width: 580px; margin-bottom: 16px; }
+    .home-hero .tagline { color: var(--gold); font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 36px; }
+    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    /* Featured products */
+    .products-section { background: var(--cream); }
+    .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
+    .product-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .product-thumb {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+    .product-thumb.green { background: linear-gradient(135deg, #1a3a2a, #2d5a3d); }
+    .product-thumb.gold  { background: linear-gradient(135deg, #4a3200, #8a6010); }
+    .product-thumb.blue  { background: linear-gradient(135deg, #0d2840, #1a4a6a); }
+    .product-thumb.earth { background: linear-gradient(135deg, #2a1a08, #4a3010); }
+    .product-info { padding: 20px; }
+    .product-info h3 { font-size: 1rem; color: var(--green-deep); margin-bottom: 6px; }
+    .product-info p  { font-size: 0.85rem; color: #666; margin-bottom: 12px; line-height: 1.5; }
+    .product-price { display: flex; align-items: center; justify-content: space-between; }
+    .product-price .price { font-size: 1.1rem; font-weight: bold; color: var(--green-deep); }
+    .btn-cart {
+      background: var(--green-deep);
+      color: var(--white);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .btn-cart:hover { background: var(--green-light); }
+
+    /* Philosophy section */
+    .philosophy { background: var(--green-deep); color: var(--white); }
+    .philosophy h2 { color: var(--gold); font-size: 2.2rem; margin-bottom: 24px; }
+    .philosophy p  { color: rgba(255,255,255,0.82); font-size: 1.05rem; max-width: 720px; margin-bottom: 16px; }
+    .principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+    .principle-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color var(--transition);
+    }
+    .principle-card:hover { border-color: var(--gold); }
+    .principle-icon { font-size: 2rem; margin-bottom: 12px; }
+    .principle-card h3 { color: var(--gold); font-size: 1.05rem; margin-bottom: 8px; }
+    .principle-card p { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+
+    /* Academy section */
+    .academy { background: var(--cream-dark); }
+    .tiers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 48px; }
+    .tier-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      border-top: 4px solid var(--green-light);
+      text-align: center;
+      position: relative;
+    }
+    .tier-card.featured { border-top-color: var(--gold); }
+    .tier-card.featured .popular-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--green-dark);
+      padding: 4px 16px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .tier-card h3 { font-size: 1.05rem; color: var(--green-deep); margin-bottom: 8px; }
+    .tier-price { font-size: 2rem; font-weight: bold; color: var(--gold); margin: 12px 0; }
+    .tier-price small { font-size: 0.8rem; color: #888; font-weight: normal; display: block; }
+    .tier-features { list-style: none; text-align: left; margin: 16px 0 24px; }
+    .tier-features li { padding: 6px 0; font-size: 0.88rem; color: #555; border-bottom: 1px solid #f0f0f0; }
+    .tier-features li::before { content: '✓ '; color: var(--green-mid); font-weight: bold; }
+
+    /* Retreat section */
+    .retreat-section {
+      background: linear-gradient(135deg, #0a2e18 0%, var(--green-deep) 50%, #1a4a2a 100%);
+      color: var(--white);
+      text-align: center;
+    }
+    .retreat-section h2 { color: var(--gold); font-size: 2.4rem; margin-bottom: 20px; }
+    .retreat-section p { color: rgba(255,255,255,0.82); max-width: 640px; margin: 0 auto 16px; font-size: 1.05rem; }
+    .retreat-icons { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin: 40px 0; }
+    .retreat-icon-item { text-align: center; }
+    .retreat-icon-item .icon { font-size: 2.5rem; margin-bottom: 8px; }
+    .retreat-icon-item span { font-size: 0.85rem; color: rgba(255,255,255,0.7); display: block; }
+
+    /* Newsletter */
+    .newsletter { background: var(--white); }
+    .newsletter-inner {
+      background: linear-gradient(135deg, var(--green-deep), #1a4a2a);
+      border-radius: var(--radius);
+      padding: 60px 48px;
+      text-align: center;
+    }
+    .newsletter-inner h2 { color: var(--gold); font-size: 2rem; margin-bottom: 12px; }
+    .newsletter-inner p { color: rgba(255,255,255,0.8); margin-bottom: 32px; }
+    .newsletter-form { display: flex; gap: 12px; max-width: 480px; margin: 0 auto; }
+    .newsletter-form input {
+      flex: 1;
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-size: 1rem;
+    }
+    .newsletter-form button {
+      padding: 14px 28px;
+      background: var(--gold);
+      color: var(--green-dark);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background var(--transition);
+    }
+    .newsletter-form button:hover { background: var(--gold-light); }
+
+    @media (max-width: 900px) {
+      .products-grid, .tiers-grid { grid-template-columns: repeat(2, 1fr); }
+      .principles-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .home-hero h1 { font-size: 2.2rem; }
+      .newsletter-form { flex-direction: column; }
+      .newsletter-inner { padding: 36px 24px; }
+      .tiers-grid, .products-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container">
+    <div class="logo">🌿 Kinetic Hermetics</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="pages/webinar-registration.html">Free Webinar</a></li>
+      <li><a href="pages/products/index.html">Products</a></li>
+      <li><a href="pages/sales.html">Academy</a></li>
+      <li><a href="pages/retreats.html">Retreats</a></li>
+      <li><a href="pages/lead-magnet.html" class="nav-cta">Free Guide</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="home-hero">
+  <div class="container">
+    <div class="hero-badge">Ancient Wisdom • Modern Science</div>
+    <h1>Nature Is The Original Intelligence</h1>
+    <p class="tagline">Herbal Healing &nbsp;•&nbsp; Hermetic Sciences &nbsp;•&nbsp; Conscious Living</p>
+    <p class="sub">Unlock ancient botanical wisdom to reclaim your energy, upgrade your mind, and reconnect with the healing intelligence of nature.</p>
+    <div class="hero-buttons">
+      <a href="pages/webinar-registration.html" class="btn btn-primary btn-lg">Join Free Webinar</a>
+      <a href="pages/lead-magnet.html" class="btn btn-secondary">Get Free Herb Guide</a>
+    </div>
+    <div class="proof-bar">
+      <div class="proof-item"><h4>15,000+</h4><p>Lives Transformed</p></div>
+      <div class="proof-item"><h4>4.9★</h4><p>Average Rating</p></div>
+      <div class="proof-item"><h4>50+</h4><p>Medicinal Herbs</p></div>
+      <div class="proof-item"><h4>30 Days</h4><p>Money-Back Guarantee</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="products-section">
+  <div class="container">
+    <div class="section-center">
+      <span class="section-label">Herbal Collection</span>
+      <h2 class="section-title">Nature's Most Powerful Remedies</h2>
+      <p class="section-subtitle">Ethically sourced, lab-tested, and formulated for maximum potency. Every product backed by our 30-day satisfaction guarantee.</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-thumb green">🌊</div>
+        <div class="product-info">
+          <h3>Organic Sea Moss</h3>
+          <p>92 of 102 minerals your body needs. Thyroid support, gut health, skin radiance.</p>
+          <div class="product-price">
+            <span class="price">$24.99</span>
+            <button class="btn-cart" onclick="addToCart('sea-moss', 'Organic Sea Moss', 24.99)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb gold">🍄</div>
+        <div class="product-info">
+          <h3>Reishi Mushroom Powder</h3>
+          <p>The "Mushroom of Immortality" — stress relief, immune support, deep sleep.</p>
+          <div class="product-price">
+            <span class="price">$32.99</span>
+            <button class="btn-cart" onclick="addToCart('reishi', 'Reishi Mushroom Powder', 32.99)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb blue">🧠</div>
+        <div class="product-info">
+          <h3>Lion's Mane Capsules</h3>
+          <p>Cognitive clarity, neuroplasticity, focus. Nature's brain supplement.</p>
+          <div class="product-price">
+            <span class="price">$28.99</span>
+            <button class="btn-cart" onclick="addToCart('lions-mane', "Lion's Mane Capsules", 28.99)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb earth">🌿</div>
+        <div class="product-info">
+          <h3>Sacred Frankincense Oil</h3>
+          <p>Ancient ceremonial grade. Meditation, spiritual practice, skin rejuvenation.</p>
+          <div class="product-price">
+            <span class="price">$29.99</span>
+            <button class="btn-cart" onclick="addToCart('frankincense', 'Sacred Frankincense Oil', 29.99)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-32">
+      <a href="pages/products/index.html" class="btn btn-green">View All Products →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy">
+  <div class="container">
+    <span class="section-label" style="background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid var(--gold);">The Foundation</span>
+    <h2>The Hermetic-Herbal Path</h2>
+    <p>For millennia, herbalists and hermetic scholars understood that nature operates through universal, immutable laws. When you align your body's chemistry with these principles through plant medicine, profound transformation becomes inevitable.</p>
+    <p>We bridge this ancient intelligence with modern botanical science to create a complete system for healing, awakening, and conscious evolution.</p>
+    <div class="principles-grid">
+      <div class="principle-card">
+        <div class="principle-icon">🌿</div>
+        <h3>Plant Intelligence</h3>
+        <p>Every medicinal herb carries millions of years of evolutionary wisdom. Learn to work with this intelligence rather than against it.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">⚡</div>
+        <h3>Hermetic Law</h3>
+        <p>The 7 universal principles that govern all of reality — from the movement of stars to the healing of cells. Master these and master your world.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">🔄</div>
+        <h3>Radical Integration</h3>
+        <p>True transformation happens at every level simultaneously — physical, mental, emotional, spiritual. Our system addresses all four.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACADEMY TIERS -->
+<section class="academy">
+  <div class="container">
+    <div class="section-center">
+      <span class="section-label">Infinite Intelligence Academy</span>
+      <h2 class="section-title">Choose Your Transformation Path</h2>
+      <p class="section-subtitle">From foundations to full immersion — structured programs designed to create measurable, lasting change in your health and consciousness.</p>
+    </div>
+    <div class="tiers-grid">
+      <div class="tier-card">
+        <h3>Herbal Foundations</h3>
+        <div class="tier-price">$297 <small>Self-paced · 8 weeks</small></div>
+        <ul class="tier-features">
+          <li>12 modules, 48 lessons</li>
+          <li>50+ medicinal herbs</li>
+          <li>Healing protocols</li>
+          <li>Lifetime access</li>
+        </ul>
+        <a href="pages/sales.html#tier-1" class="btn btn-green btn-full">Learn More</a>
+      </div>
+      <div class="tier-card featured">
+        <div class="popular-badge">Most Popular</div>
+        <h3>Hermetic Sciences Mastery</h3>
+        <div class="tier-price">$997 <small>Self-paced · 12 weeks</small></div>
+        <ul class="tier-features">
+          <li>Everything in Tier 1</li>
+          <li>Hermetic principles deep-dive</li>
+          <li>Energy medicine practices</li>
+          <li>Live monthly calls</li>
+        </ul>
+        <a href="pages/sales.html#tier-2" class="btn btn-primary btn-full">Learn More</a>
+      </div>
+      <div class="tier-card">
+        <h3>Infinite Intelligence Transformation</h3>
+        <div class="tier-price">$2,997 <small>12-month program</small></div>
+        <ul class="tier-features">
+          <li>Everything in Tier 2</li>
+          <li>Private coaching sessions</li>
+          <li>AI Knowledge Vault access</li>
+          <li>Herbal business training</li>
+        </ul>
+        <a href="pages/sales.html#tier-3" class="btn btn-green btn-full">Learn More</a>
+      </div>
+      <div class="tier-card">
+        <h3>Puerto Rico Retreat</h3>
+        <div class="tier-price">Apply <small>Limited availability</small></div>
+        <ul class="tier-features">
+          <li>7-day nature immersion</li>
+          <li>Rainforest experiences</li>
+          <li>Beach meditation</li>
+          <li>Herb identification walks</li>
+        </ul>
+        <a href="pages/retreats.html" class="btn btn-green btn-full">Apply Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section style="background: var(--white); padding: 80px 0;">
+  <div class="container">
+    <div class="section-center mb-40">
+      <span class="section-label">Testimonials</span>
+      <h2 class="section-title">Hear From Those Who've Transformed</h2>
+    </div>
+    <div class="grid-3">
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"The products and teachings have transformed my life. I feel more alive, connected, and purposeful than ever before. My energy is through the roof and my sleep has never been better."</p>
+        <div class="author"><strong>Michelle T.</strong><span>Wellness Coach, California</span></div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"The quality of these herbs is exceptional. I've noticed real changes in my energy and health within weeks. The Reishi and Sea Moss combination is life-changing."</p>
+        <div class="author"><strong>James R.</strong><span>CEO, Texas</span></div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"This community feels like family. The knowledge shared here is invaluable. The hermetic principles course completely changed how I see reality and my place in it."</p>
+        <div class="author"><strong>Elena K.</strong><span>Spiritual Teacher, New York</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RETREAT TEASER -->
+<section class="retreat-section">
+  <div class="container">
+    <span class="section-label" style="background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid var(--gold);">Puerto Rico</span>
+    <h2>Immerse in Nature's Temple</h2>
+    <p>Leave behind the noise of modern life. Spend 7 transformational days in the lush rainforests and sacred beaches of Puerto Rico with a community of conscious seekers.</p>
+    <div class="retreat-icons">
+      <div class="retreat-icon-item"><div class="icon">🌴</div><span>Rainforest Hikes</span></div>
+      <div class="retreat-icon-item"><div class="icon">🌊</div><span>Beach Meditation</span></div>
+      <div class="retreat-icon-item"><div class="icon">🌿</div><span>Herb Identification</span></div>
+      <div class="retreat-icon-item"><div class="icon">🔥</div><span>Sacred Ceremony</span></div>
+      <div class="retreat-icon-item"><div class="icon">🧘</div><span>Daily Practice</span></div>
+    </div>
+    <a href="pages/retreats.html" class="btn btn-primary btn-lg">Explore the Retreat →</a>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="container">
+    <div class="newsletter-inner">
+      <h2>Get Your Free Herbal Starter Guide</h2>
+      <p>21 medicinal herbs for energy, vitality, and radiant health — delivered instantly to your inbox.</p>
+      <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+        <input type="email" placeholder="your@email.com" required>
+        <button type="submit">Get Free Guide →</button>
+      </form>
+      <p style="color:rgba(255,255,255,0.45); font-size:0.78rem; margin-top:12px;">No spam. Unsubscribe anytime. 100% free.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">🌿 Kinetic Hermetics</div>
+        <p>Where ancient wisdom meets modern science. Herbal medicine, hermetic philosophy, and conscious living for mind, body, and soul transformation.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="pages/webinar-registration.html">Free Webinar</a></li>
+          <li><a href="pages/sales.html">Academy</a></li>
+          <li><a href="pages/lead-magnet.html">Free Herb Guide</a></li>
+          <li><a href="pages/retreats.html">Retreats</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="pages/products/index.html">All Products</a></li>
+          <li><a href="pages/products/index.html#herbal">Herbal Collection</a></li>
+          <li><a href="pages/products/index.html#oils">Essential Oils</a></li>
+          <li><a href="pages/products/index.html#digital">Digital Products</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="pages/faq.html">FAQ</a></li>
+          <li><a href="pages/shipping.html">Shipping Policy</a></li>
+          <li><a href="pages/refund.html">Refund Policy</a></li>
+          <li><a href="mailto:hello@kinetichemetics.com">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Kinetic Hermetics. All rights reserved.</span>
+      <span>
+        <a href="pages/privacy.html">Privacy Policy</a> &nbsp;|&nbsp;
+        <a href="pages/terms.html">Terms of Service</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- CHATBOT WIDGET -->
+<button id="chatbot-toggle" onclick="toggleChat()" title="Chat with our concierge">🌿</button>
+<div id="chatbot-window">
+  <div class="chatbot-header">
+    <div class="chatbot-avatar">🌿</div>
+    <div class="chatbot-header-info">
+      <h4>Infinite Intelligence Concierge</h4>
+      <span>🟢 Online — Ask me anything</span>
+    </div>
+    <button id="chatbot-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chatbot-messages" id="chatbot-messages">
+    <div class="chat-msg bot">Welcome! I'm your Infinite Intelligence Concierge 🌿<br><br>I can help you find the right herbs, courses, or answer questions about our retreats. What brings you here today?</div>
+  </div>
+  <div class="chatbot-quick-replies" id="quick-replies">
+    <button class="quick-reply" onclick="quickReply('Tell me about Sea Moss')">Sea Moss benefits</button>
+    <button class="quick-reply" onclick="quickReply('What courses do you offer?')">Courses</button>
+    <button class="quick-reply" onclick="quickReply('Tell me about the Puerto Rico retreat')">Retreat info</button>
+    <button class="quick-reply" onclick="quickReply('What is the free webinar about?')">Free Webinar</button>
+  </div>
+  <div class="chatbot-input">
+    <input type="text" id="chat-input" placeholder="Type your question..." onkeydown="if(event.key==='Enter') sendChat()">
+    <button onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<script src="js/cart.js"></script>
+<script src="js/chatbot.js"></script>
+<script>
+  function subscribeNewsletter(e) {
+    e.preventDefault();
+    const email = e.target.querySelector('input').value;
+    fetch('/api/email/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, source: 'homepage-newsletter' })
+    }).catch(() => {});
+    e.target.innerHTML = '<p style="color:var(--gold-light);font-size:1rem;font-weight:bold;">✓ Check your inbox for your free guide!</p>';
+  }
+</script>
+</body>
+</html>

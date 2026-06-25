@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Special Offer — AI Knowledge Vault Membership | Kinetic Hermetics</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body { background: var(--green-dark); }
+    .progress-bar { background: rgba(0,0,0,0.3); padding: 14px 0; text-align: center; }
+    .progress-steps { display: flex; justify-content: center; align-items: center; gap: 0; max-width: 440px; margin: 0 auto; }
+    .ps { flex: 1; text-align: center; position: relative; }
+    .ps::after { content: '▶'; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.3); font-size: 0.7rem; }
+    .ps:last-child::after { display: none; }
+    .ps-dot { width: 28px; height: 28px; border-radius: 50%; margin: 0 auto 4px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; }
+    .ps.done .ps-dot    { background: var(--gold); color: var(--green-dark); }
+    .ps.active .ps-dot  { background: var(--white); color: var(--green-dark); }
+    .ps.pending .ps-dot { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.4); }
+    .ps-label { font-size: 0.65rem; color: rgba(255,255,255,0.5); display: block; }
+    .ps.done .ps-label   { color: var(--gold); }
+    .ps.active .ps-label { color: var(--white); }
+
+    .vault-hero { padding: 64px 0 48px; text-align: center; }
+    .vault-hero .oto-tag { background: var(--gold); color: var(--green-dark); display: inline-block; padding: 6px 20px; border-radius: 100px; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 20px; }
+    .vault-hero h1 { color: var(--white); font-size: 2.4rem; max-width: 780px; margin: 0 auto 16px; line-height: 1.25; }
+    .vault-hero h1 em { color: var(--gold); font-style: normal; }
+    .vault-hero p  { color: rgba(255,255,255,0.75); font-size: 1.05rem; max-width: 600px; margin: 0 auto; }
+
+    .vault-body { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .vault-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .vault-card-header { background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05)); padding: 28px 36px; border-bottom: 1px solid rgba(201,168,76,0.2); }
+    .vault-card-header h2 { color: var(--gold); font-size: 1.7rem; margin-bottom: 8px; }
+    .vault-card-header p  { color: rgba(255,255,255,0.75); font-size: 0.95rem; }
+    .vault-card-body { padding: 32px 36px; }
+
+    .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+    .feat-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); padding: 18px; }
+    .feat-item .icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .feat-item h4 { color: var(--gold); font-size: 0.9rem; margin-bottom: 6px; }
+    .feat-item p  { color: rgba(255,255,255,0.65); font-size: 0.8rem; line-height: 1.5; }
+
+    .monthly-value { border: 1px solid rgba(201,168,76,0.3); border-radius: var(--radius-sm); padding: 20px 24px; margin: 24px 0; }
+    .mv-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.88rem; }
+    .mv-row .name { color: rgba(255,255,255,0.75); }
+    .mv-row .val  { color: var(--gold); font-weight: bold; }
+    .mv-total { display: flex; justify-content: space-between; padding-top: 12px; font-weight: bold; }
+    .mv-total .name { color: var(--white); }
+    .mv-total .val  { color: var(--gold); font-size: 1.1rem; }
+
+    .pricing-block { text-align: center; margin: 28px 0; }
+    .pricing-block .orig { color: rgba(255,255,255,0.4); text-decoration: line-through; font-size: 1.1rem; }
+    .pricing-block .sale { font-size: 3rem; font-weight: bold; color: var(--gold); line-height: 1; }
+    .pricing-block .sub  { color: rgba(255,255,255,0.5); font-size: 0.88rem; margin-top: 4px; }
+    .pricing-block .save { display: inline-block; background: rgba(192,57,43,0.3); border: 1px solid var(--red); color: #f5a5a0; padding: 4px 16px; border-radius: 100px; font-size: 0.82rem; font-weight: bold; margin-top: 8px; }
+
+    .btn-yes-dark { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--green-dark); display: block; text-align: center; padding: 22px 36px; border-radius: var(--radius-sm); font-size: 1.15rem; font-weight: bold; cursor: pointer; border: none; width: 100%; transition: all 0.2s; box-shadow: 0 6px 24px rgba(201,168,76,0.35); font-family: inherit; text-decoration: none; }
+    .btn-yes-dark:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(201,168,76,0.5); color: var(--green-dark); }
+    .btn-no-dark { display: block; text-align: center; color: rgba(255,255,255,0.3); font-size: 0.82rem; margin-top: 14px; cursor: pointer; text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .vault-hero h1 { font-size: 1.9rem; }
+      .vault-card-body { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-steps">
+    <div class="ps done"><div class="ps-dot">✓</div><span class="ps-label">Purchase</span></div>
+    <div class="ps done"><div class="ps-dot">✓</div><span class="ps-label">Offer #1</span></div>
+    <div class="ps active"><div class="ps-dot">3</div><span class="ps-label">Special Offer</span></div>
+    <div class="ps pending"><div class="ps-dot">4</div><span class="ps-label">Confirmation</span></div>
+  </div>
+</div>
+
+<div class="vault-hero">
+  <div class="container">
+    <div class="oto-tag">🤖 EXCLUSIVE MEMBER UPGRADE — ONE TIME ONLY</div>
+    <h1>Unlock the <em>AI Knowledge Vault</em> — Your Personal Herbal Intelligence System</h1>
+    <p>Get instant answers to any herbal, hermetic, or wellness question — trained on our entire curriculum, product catalog, and 25+ years of practitioner knowledge.</p>
+  </div>
+</div>
+
+<div class="vault-body">
+  <div class="vault-card">
+    <div class="vault-card-header">
+      <h2>🤖 AI Knowledge Vault Membership</h2>
+      <p>Imagine having a master herbalist and hermetic scholar available 24/7 — one who knows your health history, your goals, and our entire curriculum. That's the Knowledge Vault.</p>
+    </div>
+    <div class="vault-card-body">
+      <div class="features-grid">
+        <div class="feat-item">
+          <div class="icon">💬</div>
+          <h4>Ask Anything, Anytime</h4>
+          <p>Herb interactions, dosing, protocols, hermetic principles — get precise answers trained on our full knowledge base at 3 AM if you need it.</p>
+        </div>
+        <div class="feat-item">
+          <div class="icon">🎯</div>
+          <h4>Personalized Protocols</h4>
+          <p>Tell the AI your health goals and it builds a customized herbal protocol, daily ritual, and supplement stack tailored exactly to you.</p>
+        </div>
+        <div class="feat-item">
+          <div class="icon">📚</div>
+          <h4>Full Curriculum Access</h4>
+          <p>Every lesson, module, and piece of content from all tiers of the Academy — searchable and accessible through conversational AI.</p>
+        </div>
+        <div class="feat-item">
+          <div class="icon">🛒</div>
+          <h4>Smart Product Recommendations</h4>
+          <p>The AI knows our entire product catalog and recommends exactly what you need based on your symptoms, goals, and budget.</p>
+        </div>
+        <div class="feat-item">
+          <div class="icon">🔄</div>
+          <h4>Monthly Knowledge Updates</h4>
+          <p>New research, new herbs, new protocols added monthly. Your AI stays current so you never have to go hunting for information.</p>
+        </div>
+        <div class="feat-item">
+          <div class="icon">🌙</div>
+          <h4>Ritual & Ceremony Planning</h4>
+          <p>Plan seasonal ceremonies, full moon rituals, daily practice, and herbal preparation schedules with intelligent guidance.</p>
+        </div>
+      </div>
+
+      <div class="monthly-value">
+        <h4 style="color:var(--gold); margin-bottom:12px; font-size:0.88rem;">Monthly Value You Receive:</h4>
+        <div class="mv-row"><span class="name">Unlimited AI consultations (equivalent to ~4 sessions/month)</span><span class="val">$396/mo</span></div>
+        <div class="mv-row"><span class="name">Full curriculum library access</span><span class="val">$97/mo</span></div>
+        <div class="mv-row"><span class="name">Monthly knowledge base updates</span><span class="val">$47/mo</span></div>
+        <div class="mv-row"><span class="name">Private member community</span><span class="val">$27/mo</span></div>
+        <div class="mv-total"><span class="name">Total Monthly Value:</span><span class="val">$567/mo</span></div>
+      </div>
+
+      <div class="pricing-block">
+        <div class="orig">Regular price: $97/month</div>
+        <div class="sale">$47<span style="font-size:1.2rem;color:rgba(201,168,76,0.7)">/month</span></div>
+        <div class="sub">Cancel anytime · First month free trial included</div>
+        <div class="save">Save 52% — Founding Member Rate</div>
+      </div>
+
+      <button class="btn-yes-dark" onclick="acceptOffer()">
+        YES! Join the AI Knowledge Vault — $47/month →
+      </button>
+      <p style="text-align:center;color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:8px;">Cancel anytime · No long-term commitment · First 30 days free</p>
+      <a class="btn-no-dark" onclick="declineOffer()">No thanks, I prefer searching for answers myself</a>
+    </div>
+  </div>
+</div>
+
+<script src="../js/countdown.js"></script>
+<script src="../js/cart.js"></script>
+<script>
+  function acceptOffer() {
+    addToCart('ai-knowledge-vault', 'AI Knowledge Vault (Monthly)', 47);
+    window.location.href = 'upsell-3.html';
+  }
+  function declineOffer() {
+    window.location.href = 'upsell-3.html';
+  }
+</script>
+</body>
+</html>

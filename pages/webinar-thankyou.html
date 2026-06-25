@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You're In! — One Special Offer | Kinetic Hermetics</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .ty-hero { background: linear-gradient(135deg, var(--green-dark), #0a2a18); padding: 60px 0 40px; text-align: center; }
+    .ty-hero h1 { color: var(--gold); font-size: 2.6rem; margin-bottom: 12px; }
+    .ty-hero p  { color: rgba(255,255,255,0.82); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+    .confetti { font-size: 2.5rem; margin-bottom: 16px; }
+    .steps-bar { display: flex; justify-content: center; gap: 0; max-width: 500px; margin: 36px auto 0; }
+    .step { flex: 1; text-align: center; position: relative; }
+    .step::after { content: '›'; position: absolute; right: -4px; top: 50%; transform: translateY(-50%); color: var(--gold); font-size: 1.4rem; }
+    .step:last-child::after { display: none; }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: bold; margin-bottom: 6px; }
+    .step.done .step-num  { background: var(--gold); color: var(--green-dark); }
+    .step.active .step-num { background: var(--white); color: var(--green-dark); }
+    .step.pending .step-num { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); }
+    .step-label { font-size: 0.72rem; color: rgba(255,255,255,0.6); display: block; }
+    .step.done .step-label  { color: var(--gold); }
+    .step.active .step-label { color: var(--white); }
+
+    /* Upsell offer */
+    .upsell-section { background: var(--cream); padding: 60px 0; }
+    .upsell-box {
+      max-width: 760px; margin: 0 auto;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      border: 2px solid var(--gold);
+    }
+    .upsell-header {
+      background: linear-gradient(135deg, var(--green-deep), #1a4a2a);
+      padding: 32px 40px;
+      text-align: center;
+    }
+    .upsell-header .tag-offer { background: var(--gold); color: var(--green-dark); padding: 6px 20px; border-radius: 100px; font-size: 0.78rem; font-weight: bold; letter-spacing: 1px; display: inline-block; margin-bottom: 16px; }
+    .upsell-header h2 { color: var(--white); font-size: 1.9rem; margin-bottom: 10px; }
+    .upsell-header p  { color: rgba(255,255,255,0.8); font-size: 0.95rem; }
+    .upsell-body { padding: 36px 40px; }
+    .upsell-includes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
+    .upsell-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: var(--cream); border-radius: var(--radius-sm); }
+    .upsell-item .icon { font-size: 1.4rem; flex-shrink: 0; }
+    .upsell-item h4 { font-size: 0.88rem; color: var(--green-deep); margin-bottom: 2px; }
+    .upsell-item p  { font-size: 0.78rem; color: #666; line-height: 1.4; }
+    .price-display { text-align: center; margin: 28px 0 20px; }
+    .price-display .original { text-decoration: line-through; color: #aaa; font-size: 1.1rem; }
+    .price-display .sale { font-size: 3rem; font-weight: bold; color: var(--gold); line-height: 1; }
+    .price-display .save-badge { display: inline-block; background: #fdecea; color: var(--red); padding: 4px 14px; border-radius: 100px; font-size: 0.8rem; font-weight: bold; margin-top: 8px; }
+
+    .timer-section { background: var(--green-dark); border-radius: var(--radius-sm); padding: 16px 24px; text-align: center; margin: 0 0 24px; }
+    .timer-section p { color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-bottom: 8px; }
+
+    .decline-link { display: block; text-align: center; margin-top: 16px; color: #aaa; font-size: 0.82rem; cursor: pointer; text-decoration: underline; }
+    .decline-link:hover { color: #888; }
+
+    /* Confirmation info */
+    .confirm-section { background: var(--white); padding: 48px 0; }
+    .confirm-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; max-width: 760px; margin: 0 auto; }
+    .confirm-card { text-align: center; padding: 24px; }
+    .confirm-card .icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .confirm-card h3 { font-size: 1rem; color: var(--green-deep); margin-bottom: 8px; }
+    .confirm-card p  { font-size: 0.85rem; color: #666; }
+
+    @media (max-width: 640px) {
+      .upsell-includes { grid-template-columns: 1fr; }
+      .upsell-header, .upsell-body { padding: 24px; }
+      .confirm-grid { grid-template-columns: 1fr; }
+      .ty-hero h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="../index.html" class="logo" style="color:var(--gold);font-weight:bold;text-decoration:none;">🌿 Kinetic Hermetics</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="ty-hero">
+  <div class="container">
+    <div class="confetti">🎉</div>
+    <h1>You're Registered!</h1>
+    <p>Your spot is secured and your $497 in bonuses are on their way to your inbox. Check your email for the webinar link and instant bonus access.</p>
+
+    <div class="steps-bar">
+      <div class="step done">
+        <div class="step-num">✓</div>
+        <span class="step-label">Registered</span>
+      </div>
+      <div class="step active">
+        <div class="step-num">2</div>
+        <span class="step-label">Special Offer</span>
+      </div>
+      <div class="step pending">
+        <div class="step-num">3</div>
+        <span class="step-label">Attend Webinar</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Upsell: Herbal Starter Kit -->
+<section class="upsell-section">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:32px;">
+      <p style="color:#666; font-size:0.95rem;">One-time offer — only available on this page</p>
+    </div>
+    <div class="upsell-box">
+      <div class="upsell-header">
+        <div class="tag-offer">EXCLUSIVE WEBINAR REGISTRANT OFFER</div>
+        <h2>Start Your Transformation Before the Webinar</h2>
+        <p>Add the Herbal Starter Kit to your order and arrive at the webinar already experiencing the herbs we'll discuss — so you can ask the real questions.</p>
+      </div>
+      <div class="upsell-body">
+
+        <div class="timer-section">
+          <p>⏰ This offer expires in:</p>
+          <div class="countdown-timer" id="upsell-timer">
+            <div class="countdown-unit"><span class="num" data-h>00</span><span class="label">Hours</span></div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-unit"><span class="num" data-m>29</span><span class="label">Mins</span></div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-unit"><span class="num" data-s>59</span><span class="label">Secs</span></div>
+          </div>
+        </div>
+
+        <h3 style="text-align:center; color:var(--green-deep); margin-bottom:20px;">The Herbal Starter Kit Includes:</h3>
+        <div class="upsell-includes">
+          <div class="upsell-item"><div class="icon">🌊</div><div><h4>Organic Sea Moss (100g)</h4><p>92 minerals your body craves. The foundational superfood.</p></div></div>
+          <div class="upsell-item"><div class="icon">🍄</div><div><h4>Reishi Mushroom Powder (50g)</h4><p>Deep sleep, stress relief, immune protection.</p></div></div>
+          <div class="upsell-item"><div class="icon">🌿</div><div><h4>Sacred Frankincense Oil (15ml)</h4><p>For your meditation practice during the webinar prep.</p></div></div>
+          <div class="upsell-item"><div class="icon">📖</div><div><h4>Herbal Recipe E-Book (PDF)</h4><p>25 simple recipes using the starter kit herbs.</p></div></div>
+          <div class="upsell-item"><div class="icon">🎯</div><div><h4>7-Day Quickstart Protocol</h4><p>Exactly how to use each product from day one.</p></div></div>
+          <div class="upsell-item"><div class="icon">💬</div><div><h4>Priority Q&A Slot</h4><p>Submit your question before the live webinar.</p></div></div>
+        </div>
+
+        <div class="price-display">
+          <div class="original">Regular Price: $127.00</div>
+          <div class="sale">$67</div>
+          <div class="save-badge">Save $60 — Today Only</div>
+        </div>
+
+        <a href="checkout.html?offer=starter-kit&price=67&name=Herbal+Starter+Kit" class="btn btn-primary btn-full btn-lg">
+          Yes! Add The Starter Kit — $67 →
+        </a>
+        <p style="text-align:center; font-size:0.75rem; color:#aaa; margin-top:8px;">Secure checkout · 30-day money-back guarantee · Ships within 24 hours</p>
+
+        <a class="decline-link" onclick="declineOffer()">No thanks, I'll start without the kit and pay full price later</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Confirmation info -->
+<section class="confirm-section">
+  <div class="container">
+    <div class="confirm-grid">
+      <div class="confirm-card">
+        <div class="icon">📧</div>
+        <h3>Check Your Email</h3>
+        <p>Your webinar link and all bonuses have been sent. Check spam if you don't see it within 5 minutes.</p>
+      </div>
+      <div class="confirm-card">
+        <div class="icon">📅</div>
+        <h3>Mark Your Calendar</h3>
+        <p>The webinar is every Monday at 7 PM EST. Add it to your calendar so you don't miss it.</p>
+      </div>
+      <div class="confirm-card">
+        <div class="icon">🌿</div>
+        <h3>Explore Products</h3>
+        <p>Browse our full herbal collection while you wait for the webinar.</p>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:32px;">
+      <a href="products/index.html" class="btn btn-green">Browse Herbal Products →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none; justify-content:center; flex-direction:column; gap:8px; text-align:center;">
+      <span>&copy; 2026 Kinetic Hermetics. | <a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/countdown.js"></script>
+<script>
+  startCountdown('upsell-timer', 0, 30, 0, function() {
+    document.getElementById('upsell-timer').innerHTML = '<span style="color:var(--gold);font-weight:bold;">Offer Expired</span>';
+  });
+
+  function declineOffer() {
+    window.location.href = 'products/index.html';
+  }
+</script>
+</body>
+</html>

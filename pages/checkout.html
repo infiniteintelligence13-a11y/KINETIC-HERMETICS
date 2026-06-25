@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Checkout | Kinetic Hermetics</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    body { background: var(--cream-dark); }
+    .checkout-header { background: var(--green-dark); padding: 16px 0; }
+    .checkout-header .inner { display: flex; align-items: center; justify-content: space-between; }
+    .checkout-header .logo { color: var(--gold); font-weight: bold; font-size: 1.1rem; text-decoration: none; }
+    .secure-badge { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); font-size: 0.8rem; }
+    .secure-badge .lock { color: var(--gold); }
+
+    .checkout-wrap { max-width: 960px; margin: 40px auto; padding: 0 24px 80px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; align-items: start; }
+
+    /* Order form side */
+    .form-card { background: var(--white); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow); }
+    .form-card h2 { font-size: 1.2rem; color: var(--green-deep); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--cream-dark); }
+
+    .same-as-ship { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 0.88rem; color: #555; cursor: pointer; }
+    .same-as-ship input { width: auto; }
+
+    /* Payment element */
+    #stripe-element { border: 2px solid #ddd; border-radius: var(--radius-sm); padding: 14px; background: var(--white); transition: border-color 0.2s; }
+    #stripe-element.focused { border-color: var(--green-mid); }
+    #payment-errors { color: var(--red); font-size: 0.85rem; margin-top: 8px; min-height: 20px; }
+
+    /* Order bump */
+    .order-bump {
+      border: 2px dashed var(--gold);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      background: #fef8e7;
+      margin: 20px 0;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .order-bump:hover { background: #fdf3d0; }
+    .bump-inner { display: flex; gap: 14px; align-items: flex-start; }
+    .bump-check { width: 22px; height: 22px; border: 2px solid var(--gold); border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; font-size: 0.9rem; }
+    .bump-check.checked { background: var(--gold); }
+    .bump-content h4 { font-size: 0.9rem; color: var(--green-deep); margin-bottom: 4px; }
+    .bump-content p  { font-size: 0.78rem; color: #666; line-height: 1.5; }
+    .bump-price { font-weight: bold; color: var(--gold); font-size: 0.88rem; }
+
+    /* Submit button */
+    .pay-btn {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--green-dark);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 18px 32px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(201,168,76,0.4);
+      margin-top: 16px;
+      font-family: inherit;
+    }
+    .pay-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.5); }
+    .pay-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .pay-btn .spinner { display: none; }
+    .pay-btn.loading .spinner { display: inline-block; animation: spin 0.8s linear infinite; }
+    .pay-btn.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .trust-icons { display: flex; justify-content: center; gap: 20px; margin-top: 14px; flex-wrap: wrap; }
+    .trust-icons span { font-size: 0.72rem; color: #aaa; display: flex; align-items: center; gap: 4px; }
+
+    /* Summary side */
+    .summary-card { background: var(--white); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); position: sticky; top: 88px; }
+    .summary-card h2 { font-size: 1.1rem; color: var(--green-deep); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--cream-dark); }
+    .order-items { margin-bottom: 16px; }
+    .order-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #f5f5f5; gap: 12px; }
+    .order-item .item-name { font-size: 0.88rem; color: #444; flex: 1; }
+    .order-item .item-qty  { font-size: 0.78rem; color: #aaa; }
+    .order-item .item-price { font-size: 0.92rem; font-weight: bold; color: var(--green-deep); white-space: nowrap; }
+    .summary-line { display: flex; justify-content: space-between; padding: 7px 0; font-size: 0.88rem; color: #666; }
+    .summary-line.total { border-top: 2px solid var(--green-deep); margin-top: 8px; padding-top: 12px; font-size: 1.1rem; font-weight: bold; color: var(--green-deep); }
+    .summary-line.discount { color: var(--green-mid); }
+    .empty-cart { text-align: center; padding: 20px 0; color: #aaa; font-size: 0.9rem; }
+    .empty-cart a { color: var(--green-mid); }
+
+    /* Guarantee */
+    .guarantee-strip { background: var(--cream); border-radius: var(--radius-sm); padding: 14px 16px; margin-top: 20px; display: flex; gap: 10px; align-items: flex-start; }
+    .guarantee-strip .icon { font-size: 1.5rem; flex-shrink: 0; }
+    .guarantee-strip p { font-size: 0.78rem; color: #555; line-height: 1.5; }
+
+    @media (max-width: 700px) {
+      .checkout-wrap { grid-template-columns: 1fr; }
+      .summary-card { position: static; order: -1; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="checkout-header">
+  <div class="container">
+    <div class="inner">
+      <a href="../index.html" class="logo">🌿 Kinetic Hermetics</a>
+      <div class="secure-badge"><span class="lock">🔒</span> Secured by Stripe · SSL Encrypted</div>
+    </div>
+  </div>
+</header>
+
+<div class="checkout-wrap">
+
+  <!-- Form -->
+  <div>
+    <!-- Contact -->
+    <div class="form-card" style="margin-bottom:20px;">
+      <h2>Contact Information</h2>
+      <div class="form-row">
+        <div class="form-group"><label>First Name *</label><input type="text" id="co-first" required placeholder="First"></div>
+        <div class="form-group"><label>Last Name *</label><input type="text" id="co-last" required placeholder="Last"></div>
+      </div>
+      <div class="form-group"><label>Email Address *</label><input type="email" id="co-email" required placeholder="your@email.com"></div>
+      <div class="form-group"><label>Phone</label><input type="tel" id="co-phone" placeholder="(555) 123-4567"></div>
+    </div>
+
+    <!-- Shipping (shown only for physical products) -->
+    <div class="form-card" id="shipping-section" style="margin-bottom:20px;">
+      <h2>Shipping Address</h2>
+      <div class="form-group"><label>Street Address *</label><input type="text" id="co-address" placeholder="123 Main St"></div>
+      <div class="form-row">
+        <div class="form-group"><label>City *</label><input type="text" id="co-city" placeholder="City"></div>
+        <div class="form-group"><label>State *</label><input type="text" id="co-state" placeholder="State"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>ZIP *</label><input type="text" id="co-zip" placeholder="ZIP"></div>
+        <div class="form-group"><label>Country *</label><input type="text" id="co-country" value="United States"></div>
+      </div>
+    </div>
+
+    <!-- Order bump -->
+    <div class="order-bump" id="order-bump" onclick="toggleBump()">
+      <div class="bump-inner">
+        <div class="bump-check" id="bump-check">✓</div>
+        <div class="bump-content">
+          <h4>⚡ YES — Add the Sacred Morning Ritual Guide (+$17)</h4>
+          <p>A 30-day morning ritual system combining herbal preparation, breathwork, and hermetic journaling. Normally $47 — yours today for just $17 when added to your order.</p>
+          <span class="bump-price">Add for just $17 (regularly $47)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment -->
+    <div class="form-card">
+      <h2>Payment Information</h2>
+      <div id="stripe-element"></div>
+      <div id="payment-errors"></div>
+
+      <button class="pay-btn" id="pay-btn" onclick="submitPayment()">
+        <span class="btn-text">🔒 Complete Secure Purchase</span>
+        <span class="spinner">⟳</span>
+      </button>
+
+      <div class="trust-icons">
+        <span>🔒 SSL Secure</span>
+        <span>💳 Visa · Mastercard · Amex</span>
+        <span>🛡️ 30-Day Guarantee</span>
+        <span>📦 Ships in 24 hrs</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div>
+    <div class="summary-card">
+      <h2>Order Summary</h2>
+
+      <div class="order-items" id="order-items">
+        <div class="empty-cart">Your cart is empty.<br><a href="products/index.html">Browse products →</a></div>
+      </div>
+
+      <div id="bump-line" class="order-item" style="display:none;">
+        <div>
+          <div class="item-name">Sacred Morning Ritual Guide</div>
+          <div class="item-qty">Bonus add-on</div>
+        </div>
+        <div class="item-price">$17.00</div>
+      </div>
+
+      <div class="summary-line"><span>Subtotal</span><span id="co-subtotal">$0.00</span></div>
+      <div class="summary-line" id="shipping-line"><span>Shipping</span><span id="co-shipping">Calculated at next step</span></div>
+      <div class="summary-line discount" id="discount-line" style="display:none;"><span>Discount</span><span id="co-discount">-$0.00</span></div>
+      <div class="summary-line total"><span>Total</span><span id="co-total">$0.00</span></div>
+
+      <div class="guarantee-strip">
+        <div class="icon">🛡️</div>
+        <p><strong>30-Day Money-Back Guarantee.</strong> Not satisfied? Email us within 30 days for a full refund — no questions asked.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="../js/cart.js"></script>
+<script>
+// --- Read URL params for direct-link offers ---
+const params = new URLSearchParams(window.location.search);
+const offerName  = params.get('name');
+const offerPrice = parseFloat(params.get('price') || '0');
+const offerKey   = params.get('offer');
+
+if (offerKey && offerName && offerPrice) {
+  addToCart(offerKey, decodeURIComponent(offerName), offerPrice);
+}
+
+// --- Order bump ---
+let bumpAdded = true;
+function toggleBump() {
+  bumpAdded = !bumpAdded;
+  const check = document.getElementById('bump-check');
+  check.classList.toggle('checked', bumpAdded);
+  check.textContent = bumpAdded ? '✓' : '';
+  document.getElementById('bump-line').style.display = bumpAdded ? 'flex' : 'none';
+  renderSummary();
+}
+
+// --- Render summary ---
+function renderSummary() {
+  const cart = getCart();
+  const itemsEl = document.getElementById('order-items');
+  if (!cart.length) {
+    itemsEl.innerHTML = '<div class="empty-cart">Your cart is empty.<br><a href="products/index.html">Browse products →</a></div>';
+    document.getElementById('co-subtotal').textContent = '$0.00';
+    document.getElementById('co-total').textContent = '$0.00';
+    return;
+  }
+  itemsEl.innerHTML = cart.map(i => `
+    <div class="order-item">
+      <div>
+        <div class="item-name">${i.name}</div>
+        <div class="item-qty">Qty: ${i.qty}</div>
+      </div>
+      <div class="item-price">$${(i.price * i.qty).toFixed(2)}</div>
+    </div>
+  `).join('');
+
+  const sub = getCartTotal();
+  const bump = bumpAdded ? 17 : 0;
+  const total = sub + bump;
+  document.getElementById('co-subtotal').textContent = '$' + sub.toFixed(2);
+  document.getElementById('co-total').textContent = '$' + total.toFixed(2);
+}
+
+renderSummary();
+
+// --- Stripe setup ---
+const stripePublishableKey = 'pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'; // Replace with real key
+let stripe, cardElement;
+try {
+  stripe = Stripe(stripePublishableKey);
+  const elements = stripe.elements();
+  cardElement = elements.create('card', {
+    style: {
+      base: { fontSize: '16px', color: '#2c1810', fontFamily: 'Georgia, serif', '::placeholder': { color: '#aaa' } }
+    }
+  });
+  cardElement.mount('#stripe-element');
+  cardElement.on('focus', () => document.getElementById('stripe-element').classList.add('focused'));
+  cardElement.on('blur',  () => document.getElementById('stripe-element').classList.remove('focused'));
+  cardElement.on('change', e => {
+    document.getElementById('payment-errors').textContent = e.error ? e.error.message : '';
+  });
+} catch(e) {
+  document.getElementById('stripe-element').innerHTML = '<p style="color:#aaa;font-size:0.85rem;padding:8px 0;">Payment processing unavailable in preview mode. Configure your Stripe key in checkout.html.</p>';
+}
+
+// --- Submit ---
+async function submitPayment() {
+  const cart = getCart();
+  if (!cart.length) { alert('Your cart is empty.'); return; }
+
+  const first = document.getElementById('co-first').value.trim();
+  const last  = document.getElementById('co-last').value.trim();
+  const email = document.getElementById('co-email').value.trim();
+  if (!first || !last || !email) { alert('Please fill in your contact information.'); return; }
+
+  const btn = document.getElementById('pay-btn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  try {
+    const bump = bumpAdded ? 17 : 0;
+    const total = getCartTotal() + bump;
+
+    // Create payment intent
+    const res = await fetch('/api/payments/create-intent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + (localStorage.getItem('kh_token') || '')
+      },
+      body: JSON.stringify({ amount: total, items: getCart() })
+    });
+
+    if (!res.ok) throw new Error('Could not create payment intent');
+    const { clientSecret } = await res.json();
+
+    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: cardElement,
+        billing_details: { name: `${first} ${last}`, email }
+      }
+    });
+
+    if (error) {
+      document.getElementById('payment-errors').textContent = error.message;
+      btn.disabled = false;
+      btn.classList.remove('loading');
+    } else if (paymentIntent.status === 'succeeded') {
+      localStorage.removeItem('kh_cart');
+      window.location.href = 'order-confirmation.html?order=' + paymentIntent.id;
+    }
+  } catch(err) {
+    // Demo mode — redirect to confirmation anyway for preview
+    localStorage.removeItem('kh_cart');
+    window.location.href = 'order-confirmation.html?demo=1';
+  }
+}
+
+// Show/hide shipping section based on cart contents
+function updateShippingVisibility() {
+  const cart = getCart();
+  const hasPhysical = cart.some(i => !['sacred-apothecary','oceans-medicine','mushroom-mastery','complete-bundle','herbal-biz-accelerator','ai-knowledge-vault'].includes(i.id));
+  document.getElementById('shipping-section').style.display = hasPhysical ? 'block' : 'none';
+  document.getElementById('shipping-line').style.display = hasPhysical ? 'flex' : 'none';
+}
+updateShippingVisibility();
+</script>
+</body>
+</html>

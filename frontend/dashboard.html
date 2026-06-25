@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Kinetic Hermetics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #8b4513;
+            --gold: #d4af37;
+            --light: #ecf0f1;
+            --text: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--light);
+            color: var(--text);
+        }
+
+        /* ==================== SIDEBAR ====================*/
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--primary);
+            color: white;
+            padding: 2rem 1rem;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .sidebar-logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--gold);
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: var(--secondary);
+            color: var(--gold);
+        }
+
+        /* ==================== MAIN CONTENT ====================*/
+        .main {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--secondary), var(--gold));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logout-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: var(--gold);
+            color: var(--primary);
+        }
+
+        /* ==================== DASHBOARD GRID ====================*/
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* ==================== TABS ====================*/
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            color: #999;
+            font-size: 1rem;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            color: var(--secondary);
+            border-bottom-color: var(--gold);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ==================== TABLE ====================*/
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--light);
+            color: var(--primary);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-upcoming {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-registered {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .status-attended {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .btn {
+            background: var(--gold);
+            color: var(--primary);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #f0c040;
+        }
+
+        .btn.secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn.secondary:hover {
+            background: #a0522d;
+        }
+
+        /* ==================== PROFILE FORM ====================*/
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .btn-save {
+            background: var(--secondary);
+            color: white;
+            padding: 12px 30px;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-save:hover {
+            background: #a0522d;
+        }
+
+        /* ==================== RESPONSIVE ====================*/
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 150px;
+            }
+
+            .main {
+                margin-left: 150px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .sidebar-nav a {
+                padding: 10px;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">🌿 Kinetic<br>Hermetics</div>
+        <ul class="sidebar-nav">
+            <li><a href="#dashboard" class="nav-link active" onclick="switchTab('dashboard')">📊 Dashboard</a></li>
+            <li><a href="#webinars" class="nav-link" onclick="switchTab('webinars')">📹 My Webinars</a></li>
+            <li><a href="#courses" class="nav-link" onclick="switchTab('courses')">📚 My Courses</a></li>
+            <li><a href="#purchases" class="nav-link" onclick="switchTab('purchases')">💳 Purchases</a></li>
+            <li><a href="#profile" class="nav-link" onclick="switchTab('profile')">👤 Profile</a></li>
+            <li><a href="#" class="nav-link" onclick="logout()">🚪 Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1 id="headerTitle">Welcome Back!</h1>
+                <p id="headerSubtitle" style="color: #999; margin-top: 0.5rem;"></p>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar" id="userInitials">JD</div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Webinars Registered</h3>
+                    <div class="stat-value" id="webinarCount">0</div>
+                    <div class="stat-label">Upcoming and past webinars</div>
+                </div>
+
+                <div class="card">
+                    <h3>Courses Enrolled</h3>
+                    <div class="stat-value" id="courseCount">0</div>
+                    <div class="stat-label">Active and completed courses</div>
+                </div>
+
+                <div class="card">
+                    <h3>Total Invested</h3>
+                    <div class="stat-value" id="totalSpent">$0</div>
+                    <div class="stat-label">On courses and services</div>
+                </div>
+
+                <div class="card">
+                    <h3>Next Webinar</h3>
+                    <div class="stat-value" id="nextWebinar" style="font-size: 1.2rem; color: var(--primary);">None scheduled</div>
+                    <div class="stat-label" id="nextWebinarDate"></div>
+                    <button class="btn" style="width: 100%; margin-top: 1rem; cursor: pointer;">View All Webinars</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Webinars Tab -->
+        <div id="webinars" class="tab-content">
+            <div class="tabs" style="border-bottom: 2px solid #ddd; margin-bottom: 1.5rem;">
+                <button class="tab-btn active" onclick="filterWebinars('all')">All Webinars</button>
+                <button class="tab-btn" onclick="filterWebinars('upcoming')">Upcoming</button>
+                <button class="tab-btn" onclick="filterWebinars('completed')">Completed</button>
+            </div>
+
+            <div class="table-container">
+                <table id="webinarsTable">
+                    <thead>
+                        <tr>
+                            <th>Webinar Title</th>
+                            <th>Date & Time</th>
+                            <th>Instructor</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="webinarsBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 2rem;">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">📹</div>
+                                    <p>No webinars registered yet</p>
+                                    <button class="btn" style="margin-top: 1rem;">Explore Webinars</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Courses Tab -->
+        <div id="courses" class="tab-content">
+            <div class="tabs" style="border-bottom: 2px solid #ddd; margin-bottom: 1.5rem;">
+                <button class="tab-btn active" onclick="filterCourses('all')">All Courses</button>
+                <button class="tab-btn" onclick="filterCourses('in-progress')">In Progress</button>
+                <button class="tab-btn" onclick="filterCourses('completed')">Completed</button>
+            </div>
+
+            <div class="table-container">
+                <table id="coursesTable">
+                    <thead>
+                        <tr>
+                            <th>Course Title</th>
+                            <th>Instructor</th>
+                            <th>Progress</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="coursesBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 2rem;">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">📚</div>
+                                    <p>No courses enrolled yet</p>
+                                    <button class="btn" style="margin-top: 1rem;">Browse Courses</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Purchases Tab -->
+        <div id="purchases" class="tab-content">
+            <div class="table-container">
+                <table id="purchasesTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Item</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Invoice</th>
+                        </tr>
+                    </thead>
+                    <tbody id="purchasesBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 2rem;">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">💳</div>
+                                    <p>No purchases yet</p>
+                                    <button class="btn" style="margin-top: 1rem;">Shop Now</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Profile Tab -->
+        <div id="profile" class="tab-content">
+            <div class="card" style="max-width: 600px;">
+                <h3>Edit Profile</h3>
+                <form id="profileForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" id="firstName" placeholder="First Name">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" id="lastName" placeholder="Last Name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="profileEmail" placeholder="Email" disabled style="background: #f5f5f5;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="phone" placeholder="Phone Number">
+                    </div>
+
+                    <button type="submit" class="btn btn-save">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Load data based on tab
+            if (tabName === 'dashboard') {
+                loadDashboardData();
+            } else if (tabName === 'webinars') {
+                loadWebinars();
+            } else if (tabName === 'courses') {
+                loadCourses();
+            } else if (tabName === 'purchases') {
+                loadPurchases();
+            } else if (tabName === 'profile') {
+                loadProfile();
+            }
+        }
+
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch('/api/dashboard', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                // Update user info
+                document.getElementById('headerTitle') = `Welcome back, ${data.user.firstName}!`;
+                document.getElementById('userInitials').textContent = 
+                    (data.user.firstName[0] + data.user.lastName[0]).toUpperCase();
+
+                // Update stats
+                document.getElementById('webinarCount').textContent = data.webinarRegistrations.length;
+                document.getElementById('courseCount').textContent = data.purchases.length;
+                document.getElementById('totalSpent').textContent = '$' + data.totalSpent.toFixed(2);
+
+                // Find next webinar
+                const nextWebinar = data.webinarRegistrations
+                    .filter(w => new Date(w.webinarId.date) > new Date())
+                    .sort((a, b) => new Date(a.webinarId.date) - new Date(b.webinarId.date))[0];
+
+                if (nextWebinar) {
+                    document.getElementById('nextWebinar').textContent = nextWebinar.webinarId.title;
+                    document.getElementById('nextWebinarDate').textContent = 
+                        new Date(nextWebinar.webinarId.date).toLocaleDateString();
+                }
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+        }
+
+        // Load webinars
+        async function loadWebinars() {
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch('/api/dashboard', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                const tbody = document.getElementById('webinarsBody');
+                tbody.innerHTML = '';
+
+                data.webinarRegistrations.forEach(registration => {
+                    const webinar = registration.webinarId;
+                    const row = `
+                        <tr>
+                            <td>${webinar.title}</td>
+                            <td>${new Date(webinar.date).toLocaleDateString()}</td>
+                            <td>${webinar.instructor}</td>
+                            <td><span class="status-badge status-upcoming">Upcoming</span></td>
+                            <td><button class="btn">Join</button></td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Error loading webinars:', error);
+            }
+        }
+
+        // Load courses
+        async function loadCourses() {
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch('/api/dashboard', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                const tbody = document.getElementById('coursesBody');
+                tbody.innerHTML = '';
+
+                data.purchases.forEach(purchase => {
+                    const row = `
+                        <tr>
+                            <td>${purchase.courseId?.title || 'Course'}</td>
+                            <td>${purchase.courseId?.instructor || 'N/A'}</td>
+                            <td>0%</td>
+                            <td><span class="status-badge status-registered">Enrolled</span></td>
+                            <td><button class="btn">Continue</button></td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Error loading courses:', error);
+            }
+        }
+
+        // Load purchases
+        async function loadPurchases() {
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch('/api/payments/history', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const payments = await response.json();
+                const tbody = document.getElementById('purchasesBody');
+                tbody.innerHTML = '';
+
+                payments.forEach(payment => {
+                    const row = `
+                        <tr>
+                            <td>${new Date(payment.paymentDate).toLocaleDateString()}</td>
+                            <td>Course Purchase</td>
+                            <td>$${payment.amount.toFixed(2)}</td>
+                            <td><span class="status-badge status-registered">Completed</span></td>
+                            <td><button class="btn secondary">Download</button></td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Error loading purchases:', error);
+            }
+        }
+
+        // Load profile
+        async function loadProfile() {
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch('/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const user = await response.json();
+
+                document.getElementById('firstName').value = user.firstName;
+                document.getElementById('lastName').value = user.lastName;
+                document.getElementById('profileEmail').value = user.email;
+                document.getElementById('phone').value = user.phone || '';
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        // Filter functions
+        function filterWebinars(filter) {
+            // Implement filtering logic
+        }
+
+        function filterCourses(filter) {
+            // Implement filtering logic
+        }
+
+        // Save profile
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch('/api/dashboard/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        firstName: document.getElementById('firstName').value,
+                        lastName: document.getElementById('lastName').value,
+                        phone: document.getElementById('phone').value
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Profile updated successfully!');
+                }
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                alert('Error saving profile');
+            }
+        });
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('authToken');
+            window.location.href = '/';
+        }
+
+        // Load initial data
+        window.addEventListener('load', loadDashboardData);
+    </script>
+</body>
+</html>
